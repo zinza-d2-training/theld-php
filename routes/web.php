@@ -25,6 +25,5 @@ Route::middleware('guest')->name('auth.')->group(function () {
     Route::post('update-password', [AuthController::class, 'updatePassword'])->name('updatePassword');
 });
 
-Route::middleware(['auth'])->name('admin.')->group(function () {
-    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-});
+Route::middleware(['auth'])->get('logout', [AuthController::class, 'logout'])->name('logout');
+
