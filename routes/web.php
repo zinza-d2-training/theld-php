@@ -26,6 +26,5 @@ Route::middleware('guest')->name('auth.')->group(function () {
 });
 
 Route::middleware(['auth'])->name('admin.')->group(function () {
-    Route::get('', [AuthController::class, 'index'])->name('login');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
