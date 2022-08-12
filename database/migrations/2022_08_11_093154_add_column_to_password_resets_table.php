@@ -13,15 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::table('password_resets', function (Blueprint $table) {
+            $table->timestamp('updated_at')->nullable();
             $table->id();
-            $table->string('name');
-            $table->string('logo');
-            $table->string('address');
-            $table->integer('max_user');
-            $table->date('expired_at');
-            $table->integer('status');
-            $table->timestamps();
         });
     }
 
@@ -32,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('companies');
+        Schema::table('password_resets', function (Blueprint $table) {
+            $table->dropColumn('updated_at');
+        });
     }
 };
