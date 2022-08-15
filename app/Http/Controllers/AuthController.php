@@ -30,7 +30,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => $request->password
         ])) {
-            echo "Logged";
+            return redirect()->route('home');
         } else {
             return back()->withErrors('Incorrect password');
         }
