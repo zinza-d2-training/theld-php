@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +26,16 @@ Route::middleware('guest')->name('auth.')->group(function () {
     Route::get('reset-password/{token}', [AuthController::class, 'editPassword'])->name('editPassword');
     Route::post('update-password', [AuthController::class, 'updatePassword'])->name('updatePassword');
 });
+Route::middleware(['auth'])->name('auth.logout')->get('logout', [AuthController::class, 'logout']);
 
-Route::middleware(['auth'])->get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::middleware('auth')->name('profile.')->group(function () {
+    Route::get('profile', [ProfileController::class, 'index'])->name('edit');
+    Route::post('profile', [ProfileController::class, 'update'])->name('update');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('', [HomeController::class, 'index'])->name('home');
+});
+
+
 
