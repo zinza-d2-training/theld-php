@@ -59,7 +59,6 @@ class AuthController extends Controller
             $oldReset->save();
         }
 
-
         $email = new ResetPasswordEmail([
             "token" => $token
         ]);
