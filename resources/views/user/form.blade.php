@@ -33,7 +33,7 @@
                             <select class="form-select" name="company_id" id="role" aria-label="Default select example" required>
                                 <option selected disabled>Select company</option>
                                     @foreach ($companies as $company)
-                                        <option value="{{$company->id}}" {{$isEditing && $user->company->id==$company->id ? 'selected' : ''}}>{{$company->name}}</option>
+                                        <option value="{{$company->id}}" {{($isEditing && $user->company->id==$company->id ) || (Auth::user()->role_id==2) ? 'selected' : ''}}>{{$company->name}}</option>
                                     @endforeach
                             </select>
                         </div>
@@ -42,6 +42,21 @@
                         <div class="dob col-4 mb-3">
                             <label for="dob" class="form-label">Date Of Birth</label>
                             <input name="dob" type="date" id="dob" value="{{$isEditing ? $user->dob : ''}}" class="form-control">
+                        </div>
+                        <div class="dob col-4 mb-3">
+                            <label lass="form-label">Status</label>
+                            <div class="form-check">
+                                <input class="form-check-input" value="1" type="radio" name="status" id="flexRadioDefault1" {{$isEditing ? ($user->status==1? 'checked' : '') : 'checked'}}>
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    Activate
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" value="0" type="radio" name="status" id="flexRadioDefault2" {{$isEditing && $user->status==0? 'checked' : ''}}>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    Inactivate
+                                </label>
+                            </div>
                         </div>
                     </div>
 

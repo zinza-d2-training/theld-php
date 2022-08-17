@@ -8,7 +8,7 @@
                 <form method="POST" action="{{ route('profile.update') }}" class="form p-5" enctype="multipart/form-data">
                     @csrf
                     <div class="avatar d-flex justify-content-center mb-5">
-                        <img class="rounded-circle border border-5 border-primary" src="{{asset($user->avatar)}}" id="avatar-img" alt="avatar" width="200px" height="200px">
+                        <img class="rounded-circle border border-5 border-primary" src="{{Auth::user()->avatar ? asset(Auth::user()->avatar) : config('constant.images.user');}}" id="avatar-img" alt="avatar" width="200px" height="200px">
                         <label for="avt-input" style="font-size: 35px"><i class="fa-solid fa-camera"></i></label>
                         <input type="file" id="avt-input" style="display: none" accept=".jpg,.jpeg,.png,.gif" name="avatar" onchange="document.getElementById('avatar-img').src = window.URL.createObjectURL(this.files[0])">
                     </div>

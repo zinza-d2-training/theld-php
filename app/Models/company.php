@@ -18,9 +18,4 @@ class Company extends Model
         'experied_at',
         'status'
     ];
-
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
 }

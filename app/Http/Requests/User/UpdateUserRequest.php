@@ -27,7 +27,8 @@ class UpdateUserRequest extends FormRequest
             'name' => 'required',
             'role_id' => 'required|exists:Roles,id',
             'company_id' => 'required|integer|exists:Companies,id',
-            'dob' => 'nullable|date'
+            'dob' => 'nullable|date',
+            'status' => 'required|integer|min:0|max:1'
         ];
     }
 }
