@@ -27,11 +27,17 @@ class UserPolicy
 
         if ($auth->id == $user->id)
             return false;
+
         if ($auth->role_id == 1)
             return true;
         elseif ($auth->role_id == 2 && $auth->user_company->company_id == $user->user_company->company_id)
             return true;
 
         return false;
+    }
+
+    public function admin()
+    {
+        return Auth::user()->role_id == 1;
     }
 }

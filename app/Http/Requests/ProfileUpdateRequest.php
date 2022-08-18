@@ -27,8 +27,8 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'name' => ' required|string|min:5|max:100',
             'old_password' => 'nullable|max:50',
-            'new_password' => 'nullable|min:5|max:50',
-            'confirm_new_password' => 'nullable|min:5|max:50',
+            'new_password' => 'nullable|min:5|max:50|required_unless:old_password,null',
+            'confirm_new_password' => 'nullable|min:5|max:50|same:new_password',
             'avatar' => 'nullable|mimes:jpeg,jpg,png,gif'
         ];
     }
