@@ -54,7 +54,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" value="0" type="radio" name="status" id="flexRadioDefault2" {{$isEditing && $user->status==0? 'checked' : ''}}>
                                 <label class="form-check-label" for="flexRadioDefault2">
-                                    Inactivate
+                                    Deactivate
                                 </label>
                             </div>
                         </div>

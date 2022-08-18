@@ -12,39 +12,58 @@ class UserServices extends Controller
 {
     public function getUsers()
     {
-        if (Auth::user()->role_id == 1) {
+        if (Auth::user()->role_id == User::role_admin) {
             $users = User::select('id', 'name', 'dob', 'status', 'role_id')
-                    ->where('id', '!=', Auth::id())
-                    ->orderBy('id', 'desc')
-                    ->paginate(10);
+            ->where('id', '!=', Auth::id())
+            ->orderBy('id', 'desc')
+            ->paginate(10);
         }
         else {
-            $users = User::select('users.id as id', 'users.name as name', 'users.dob as dob', 'users.status as status', 'users.role_id as role_id', 'user_companies.company_id as company_id')
-                    ->join('user_companies', 'users.id', '=', 'user_companies.user_id')
-                    ->where('users.id', '!=', Auth::id())
-                    ->where('user_companies.company_id', '=', Auth::user()->user_company->company_id)
-                    ->orderBy('id', 'desc')
-                    ->paginate(10);
+            $users = User::select('id', 'name', 'dob', 'status', 'role_id', 'company_id')
+            ->where('id', '!=', Auth::id())
+            ->where('company_id', Auth::user()->company->id)
+            ->orderBy('id', 'desc')
+            ->paginate(10);
         }
-        foreach ($users as $user)
-            $user->role;
 
+        foreach ($users as $user) {
+            $user->role;
+        }
         return $users;
     }
 
     public function getCompanies()
     {
-        if (Auth::user()->role_id==2)
-            return Auth::user()->company;
-        else
+        if (Auth::user()->role_id == User::role_company_account) {
+            return [Auth::user()->company];
+        }
+        else {
             return Company::select('id', 'name', 'max_user', 'expired_at', 'status')
-                        ->where('expired_at', '>', now())
-                        ->where('status', 1)
-                        ->get();
+            ->where('expired_at', '>', now())
+            ->where('status', Company::status_activate)
+            ->get();
+        }
     }
 
     public function getRoles()
     {
         return Role::select('id', 'name')->where('id', '>', 1)->get();
+    }
+
+    public function storeUser($data)
+    {
+        $data['company_id'] = Auth::user()->role_id==User::role_admin ? Auth::user()->company->id : $data['company_id'];
+        return User::create($data);
+    }
+
+    public function updateUser($data, User $user)
+    {
+        return $user->update($data);
+    }
+
+    public function deleteUser(User $user)
+    {
+        $user->delete();
+        return $user->trashed();
     }
 }

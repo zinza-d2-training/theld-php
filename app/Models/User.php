@@ -13,6 +13,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    const role_admin = 1;
+    const role_company_account = 2;
+    const status_activate = 1;
+    const status_deactivate = 0;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -26,6 +31,7 @@ class User extends Authenticatable
         'dob',
         'status',
         'role_id',
+        'company_id'
     ];
 
     /**
@@ -54,11 +60,6 @@ class User extends Authenticatable
 
     public function company()
     {
-        return $this->belongsToMany(Company::class, 'User_companies');
-    }
-
-    public function user_company()
-    {
-        return $this->hasOne(User_company::class);
+        return $this->belongsTo(Company::class);
     }
 }

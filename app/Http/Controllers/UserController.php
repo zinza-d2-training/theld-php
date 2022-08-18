@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\UserActions;
+use App\Services\userServices;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
-use App\Models\User_company;
-use App\Services\UserServices;
+use App\Models\UserCompany;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function __construct(UserServices $userServices, UserActions $userActions)
+    public function __construct(UserServices $userServices)
     {
         $this->userServices = $userServices;
-        $this->userActions = $userActions;
     }
 
     public function index()
@@ -41,15 +39,14 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        $user = $this->userActions->storeUser($request);
-        $this->userActions->storeUserCompany($request, $user);
+        $this->userServices->storeUser($request->input());
         
         return redirect()->route('user.index')->withSuccess('Create User Successfully');
     }
 
     public function edit(User $user)
     {
-        $user->company = $user->company[0];
+        $user->company;
         $companies = $this->userServices->getCompanies();
         $roles = $this->userServices->getRoles();
 
@@ -63,19 +60,20 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
-        $this->userActions->updateUser($request, $user);
-        $this->userActions->updateUserCompany($request, $user);
+        $this->userServices->updateUser($request->input(), $user);
 
         return back()->withSuccess('Update profile successfully');
     }
 
     public function delete(User $user)
     {
-        $deleted = $this->userActions->deleteUser($user);
+        $deleted = $this->userServices->deleteUser($user);
 
-        if ($deleted)
+        if ($deleted) {
             return redirect()->route('user.index')->withSuccess('Delete User Successfully');
-        else 
+        }
+        else {
             return back()->withErrors('Delete User Failed');
+        }
     }
 }

@@ -45,7 +45,7 @@
                         <div class="mb-3 text-end">
                             <a class="forgot-password" href="{{ route('auth.forgotPassword') }}">Forgot Password?</a>
                         </div>
-                        <button type="submit" class="btn btn-primary w-full">Submit</button>
+                        <button type="submit" class="btn btn-primary w-full">Login</button>
                     </form>
                 </div>
             </div>

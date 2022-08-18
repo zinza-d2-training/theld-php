@@ -10,6 +10,9 @@ class Company extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const status_activate = 1;
+    const status_deactivate = 0;
+
     protected $fillable = [
         'name',
         'logo',
