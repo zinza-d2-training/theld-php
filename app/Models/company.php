@@ -21,4 +21,14 @@ class Company extends Model
         'experied_at',
         'status'
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function companyAccount()
+    {
+        return $this->hasOne(User::class)->where('role_id', User::role_company_account);
+    }
 }

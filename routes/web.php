@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -49,5 +50,15 @@ Route::middleware('auth')->group(function () {
             Route::delete('delete/{user}', [UserController::class, 'delete'])->name('delete');
             Route::delete('change-status/{user}', [UserController::class, 'updateStatus'])->name('updateStatus');
         });
+    });
+
+    Route::middleware('admin')->name('company.')->prefix('company')->group(function () {
+        Route::get('', [CompanyController::class, 'index'])->name('index');
+        Route::get('create', [CompanyController::class, 'create'])->name('create');
+        Route::post('store', [CompanyController::class, 'store'])->name('store');
+        Route::get('edit/{company}', [CompanyController::class, 'edit'])->name('edit');
+        Route::post('update/{company}', [CompanyController::class, 'update'])->name('update');
+        Route::delete('delete/{company}', [CompanyController::class, 'delete'])->name('delete');
+        Route::delete('change-status/{company}', [CompanyController::class, 'updateStatus'])->name('updateStatus');
     });
 });
