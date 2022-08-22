@@ -2,5 +2,5 @@
 @section('master-content')
 
 
-
+HOME
 @endsection

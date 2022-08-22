@@ -1,0 +1,1 @@
+<span class="badge rounded-pill bg-{{($role->id==1) ? 'success' : (($role->id==2) ? 'warning' : 'secondary') }}">{{$role->name}}</span>

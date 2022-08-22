@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    public function index()
+    public function edit()
     {
         $user = Auth::user();
         return view('profile.edit', [
@@ -23,25 +23,17 @@ class ProfileController extends Controller
     {
         $oldUser = User::find(Auth::id());
 
-        $oldUser->name = ($request->name != $oldUser->name) ? $request->name : $oldUser->name;
-        $oldUser->dob = ($request->dob != $oldUser->dob) ? $request->dob : $oldUser->dob;
+        $oldUser->name = $request->name;
+        $oldUser->dob = $request->dob;
 
         if ($request->hasFile('avatar')) {
             $fileName = $request->avatar->hashName();
-            $oldUser->avatar = $request->avatar->storeAs('images/users', $fileName);
+            $oldUser->avatar = $request->avatar->storeAs('images/user', $fileName);
         }
 
         if ($request->old_password || $request->new_password || $request->confirm_new_password) {
             if (!Hash::check($request->old_password, $oldUser->password)) {
                 return back()->withErrors('Wrong old password');
-            }
-
-            if (strlen($request->new_password)<5) {
-                return back()->withErrors('New password is missing');
-            }
-
-            if (!$request->new_password == $request->confirm_new_password) {
-                return back()->withErrors('Confirm new password not match');
             }
 
             $oldUser->password = Hash::make($request->new_password);

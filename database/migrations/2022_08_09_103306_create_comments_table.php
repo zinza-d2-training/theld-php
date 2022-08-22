@@ -18,8 +18,9 @@ return new class extends Migration
             $table->text('content');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('post_id');
-            $table->boolean('is_resolve');
+            $table->boolean('is_resolve')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

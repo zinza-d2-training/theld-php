@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->unsignedBigInteger('topic_id');
-            $table->integer('status');
+            $table->integer('status')->default(0);
             $table->integer('user_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

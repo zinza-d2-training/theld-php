@@ -1,41 +1,14 @@
 @extends('layouts.master')
 
 @section('master-content')
-    <div aria-live="polite" aria-atomic="true" class="position-relative">
-        <div class="toast-container position-absolute top-0 end-0 p-3">
-
-            @if ($errors->any())
-                @foreach ($errors->all() as $error)
-                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header bg-danger text-light">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                        <p class="me-auto my-auto mx-1">{{$error}}</p>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                </div>
-                @endforeach
-            @endif
-
-            @if(Session::has('success'))
-            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header bg-success text-light">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <p class="me-auto my-auto mx-1">{{ Session::get('success') }}</p>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-            @endif
-    </div>
-
     <div class="container profile-edit">
         <div class="bg-light rounded mt-3 px-3 py-4">
             <h3>Account Info</h3>
-
                 
                 <form method="POST" action="{{ route('profile.update') }}" class="form p-5" enctype="multipart/form-data">
                     @csrf
                     <div class="avatar d-flex justify-content-center mb-5">
-                        <img class="rounded-circle border border-5 border-primary" src="{{asset($user->avatar)}}" id="avatar-img" alt="avatar" width="200px" height="200px">
+                        <img class="rounded-circle border border-5 border-primary" src="{{Auth::user()->avatar ? asset(Auth::user()->avatar) : config('constant.images.user');}}" id="avatar-img" alt="avatar" width="200px" height="200px">
                         <label for="avt-input" style="font-size: 35px"><i class="fa-solid fa-camera"></i></label>
                         <input type="file" id="avt-input" style="display: none" accept=".jpg,.jpeg,.png,.gif" name="avatar" onchange="document.getElementById('avatar-img').src = window.URL.createObjectURL(this.files[0])">
                     </div>
@@ -49,7 +22,7 @@
                             <input type="email" class="form-control" id="email" aria-describedby="emailHelp" disabled value="{{$user->email}}">
                         </div>
                         <div class="col-4"></div>
-                    </div>ac
+                    </div>
                     <div class="row">
                         <div class="col-4 mb-3">
                             <label for="old-password" class="form-label">Old password</label>
@@ -79,14 +52,4 @@
     
 @endsection
 
-@section('master-script')
-    <script>
-        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
-        var toastList = toastElList.map(function (toastEl) {
-            return new bootstrap.Toast(toastEl)
-        })
-        for (const x of toastList) {
-            x.show();
-        }
-    </script>
-@endsection
+
