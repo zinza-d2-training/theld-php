@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,5 +51,14 @@ Route::middleware('auth')->group(function () {
             Route::delete('delete/{user}', [UserController::class, 'delete'])->name('delete');
             Route::delete('change-status/{user}', [UserController::class, 'updateStatus'])->name('updateStatus');
         });
+    });
+
+    Route::middleware('admin')->name('tag.')->prefix('tag')->group(function () {
+        Route::get('', [TagController::class, 'index'])->name('index');
+        Route::get('create', [TagController::class, 'create'])->name('create');
+        Route::post('store', [TagController::class, 'store'])->name('store');
+        Route::get('edit/{tag}', [TagController::class, 'edit'])->name('edit');
+        Route::post('update/{tag}', [TagController::class, 'update'])->name('update');
+        Route::delete('delete/{tag}', [TagController::class, 'destroy'])->name('delete');
     });
 });
