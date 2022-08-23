@@ -10,15 +10,15 @@ class CompanyServices
 {
     public function getCompanies()
     {
-        $compamies = Company::select('id', 'name', 'status', 'max_user')
+        $companies = Company::select('id', 'name', 'status', 'max_user')
         ->orderBy('id', 'desc')
         ->paginate(10);
 
-        foreach ($compamies as $company) {
+        foreach ($companies as $company) {
             $company->companyAccount;
             $company->countUser = $company->users->count();
         }
-        return $compamies;
+        return $companies;
     }
 
     public function storeCompany($request)

@@ -58,7 +58,7 @@ class CompanyController extends Controller
         return back()->withSuccess('Update Company Successfully');
     }
 
-    public function delete(Company $company)
+    public function destroy(Company $company)
     {
         $deleted = $this->companyServices->deleteCompany($company);
 
