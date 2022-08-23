@@ -20,9 +20,18 @@ class CompanyServices
         return $compamies;
     }
 
-    public function updateCompany()
+    public function storeCompany($data)
     {
-        
+        return Company::create($data);
+    }
+
+    public function updateCompany($data, $company)
+    {
+        $count = $company->users->count();
+        if ($data['max_user'] < $count) {
+            return false;
+        }
+        return $company->update($data);
     }
 
     public function isActivate($id)
@@ -33,5 +42,11 @@ class CompanyServices
             return true;
         }
         return $company->status == Company::status_activate;
+    }
+
+    public function deleteCompany($company)
+    {
+        $company->delete();
+        return $company->trashed();
     }
 }

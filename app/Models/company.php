@@ -18,7 +18,7 @@ class Company extends Model
         'logo',
         'address',
         'max_user',
-        'experied_at',
+        'expired_at',
         'status'
     ];
 

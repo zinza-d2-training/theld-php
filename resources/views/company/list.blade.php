@@ -2,8 +2,8 @@
 @section('master-content')
     <div class="container mt-3 py-4">
         <div class="d-flex justify-content-between">
-            <h3>User Management</h3>
-            <a href="{{ route('user.create') }}" class="btn btn-primary">New User</a>
+            <h3>Company Management</h3>
+            <a href="{{ route('company.create') }}" class="btn btn-primary">New Company</a>
         </div>
 
         <table class="table table-hover">
@@ -21,15 +21,19 @@
                 @foreach ($companies as $company)
                 <tr>
                     <th><input type="checkbox" name="" id=""></th>
-                    <td>{{$company->companyAccount}}</td>
+                    <td>
+                        {{ data_get($company->companyAccount, 'name')  }}
+                        <br>
+                        <span>{{ data_get($company->companyAccount, 'email')  }}</span>
+                    </td>
                     <td>
                         <div class="row">
-                            <div class="col">{{$company->name}}</div>
+                            <div class="col">{{ $company->name }}</div>
                         </div>
                     </td>
                     <td><x-user.status :status="$company->status"/></td>
                     <td>
-                        {{$company->countUser}} / {{$company->max_user}}
+                        {{ $company->countUser }} / {{ $company->max_user }}
                     </td>
                     <td>
                         <div class="dropdown">
@@ -57,8 +61,8 @@
 
 @section('master-script')
     <script>
-        function deleteUser(e) {
-            if (confirm('Delete this user?'))
+        function deleteCompany(e) {
+            if (confirm('Delete this company?'))
                 e.parentNode.submit()
         }
     </script>

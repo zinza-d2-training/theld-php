@@ -9,7 +9,7 @@
                 <form method="POST" action="{{ $isEditing ? route('company.update', ['company'=>$company->id]) : route('company.store') }}" class="form p-5" enctype="multipart/form-data">
                     @csrf
                     <div class="avatar d-flex justify-content-center mb-5">
-                        <img class="rounded-circle border border-5 border-primary" src="{{$company->logo ? asset($company->logo) : config('constant.images.company');}}" id="avatar-img" alt="logo" width="200px" height="200px">
+                        <img class="rounded-circle border border-5 border-primary" src="{{$isEditing && $company->logo ? asset($company->logo) : asset(config('constant.images.company'))}}" id="avatar-img" alt="logo" width="200px" height="200px">
                         <label for="avt-input" style="font-size: 35px"><i class="fa-solid fa-camera"></i></label>
                         <input type="file" id="avt-input" style="display: none" accept=".jpg,.jpeg,.png,.gif" name="logo" onchange="document.getElementById('avatar-img').src = window.URL.createObjectURL(this.files[0])">
                     </div>

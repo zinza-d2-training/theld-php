@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Company\StoreCompanyRequest;
 use App\Http\Requests\Company\UpdateCompanyRequest;
 use App\Models\Company;
+use App\Models\User;
 use App\Services\CompanyServices;
 use Illuminate\Http\Request;
 
@@ -46,16 +47,20 @@ class CompanyController extends Controller
         ]);
     }
 
-    public function update(UpdateCompanyRequest $request)
+    public function update(UpdateCompanyRequest $request, Company $company)
     {
-        $this->companyServices->updateCompany($request->input());
+        $updated = $this->companyServices->updateCompany($request->input(), $company);
+
+        if (!$updated) {
+            return back()->withErrors('Failed to change Max User');
+        }
 
         return back()->withSuccess('Update Company Successfully');
     }
 
     public function delete(Company $company)
     {
-        $deleted = $this->companyServices->deleteCompany($company->id);
+        $deleted = $this->companyServices->deleteCompany($company);
 
         if ($deleted) {
             return redirect()->route('company.index')->withSuccess('Delete Company Successfully');
