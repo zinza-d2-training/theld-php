@@ -11,6 +11,7 @@ class CompanyServices
     public function getCompanies()
     {
         $compamies = Company::select('id', 'name', 'status', 'max_user')
+        ->orderBy('id', 'desc')
         ->paginate(10);
 
         foreach ($compamies as $company) {
@@ -20,13 +21,27 @@ class CompanyServices
         return $compamies;
     }
 
-    public function storeCompany($data)
+    public function storeCompany($request)
     {
+        $data = $request->input();
+
+        if ($request->hasFile('logo')) {
+            $fileName = $request->logo->hashName();
+            $data['logo'] = $request->logo->storeAs('images/company', $fileName);
+        }
+
         return Company::create($data);
     }
 
-    public function updateCompany($data, $company)
+    public function updateCompany($request, $company)
     {
+        $data = $request->input();
+
+        if ($request->hasFile('logo')) {
+            $fileName = $request->logo->hashName();
+            $data['logo'] = $request->logo->storeAs('images/company', $fileName);
+        }
+
         $count = $company->users->count();
         if ($data['max_user'] < $count) {
             return false;

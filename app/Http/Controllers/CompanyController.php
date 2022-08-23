@@ -34,7 +34,7 @@ class CompanyController extends Controller
 
     public function store(StoreCompanyRequest $request)
     {
-        $this->companyServices->storeCompany($request->input());
+        $this->companyServices->storeCompany($request);
         
         return redirect()->route('company.index')->withSuccess('Create Company Successfully');
     }
@@ -49,7 +49,7 @@ class CompanyController extends Controller
 
     public function update(UpdateCompanyRequest $request, Company $company)
     {
-        $updated = $this->companyServices->updateCompany($request->input(), $company);
+        $updated = $this->companyServices->updateCompany($request, $company);
 
         if (!$updated) {
             return back()->withErrors('Failed to change Max User');
