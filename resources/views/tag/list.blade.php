@@ -19,11 +19,7 @@
                 @foreach ($tags as $tag)
                 <tr>
                     <th><input type="checkbox" name="" id=""></th>
-                    <td>
-                        <div class="row">
-                            <div class="col">{{$tag->name}}</div>
-                        </div>
-                    </td>
+                    <td><x-tag.item :name="$tag->name" :color="$tag->color"/></td>
                     <td>{{$tag->countPost}}</td>
                     <td>
                         <div class="dropdown">
