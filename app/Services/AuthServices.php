@@ -19,15 +19,6 @@ class AuthServices {
         return $token;
     }
 
-    public function sendMailReset($emailAddress, $token)
-    {
-        $email = new ResetPasswordEmail([
-            "token" => $token
-        ]);
-    
-        Mail::to($emailAddress)->send($email);
-    }
-
     public function isAliveToken($token)
     {
         $passwordReset = PasswordReset::where('token', $token)->first();

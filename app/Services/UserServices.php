@@ -3,12 +3,10 @@
 namespace App\Services;
 
 use App\Http\Controllers\Controller;
-use App\Mail\NewUserMail;
 use App\Models\Company;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 
 class UserServices extends Controller
 {
@@ -56,16 +54,6 @@ class UserServices extends Controller
     {
         $data['company_id'] = Auth::user()->role_id==User::role_company_account ? Auth::user()->company->id : $data['company_id'];
         return User::create($data);
-    }
-
-    public function sendMailNewUser($data)
-    {
-        $email = new NewUserMail([
-            'email' => $data['email'],
-            'name' => $data['name']
-        ]);
-    
-        Mail::to($data['email'])->send($email);
     }
 
     public function updateUser($data, User $user)

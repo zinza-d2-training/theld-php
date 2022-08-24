@@ -9,16 +9,18 @@ use App\Models\PasswordReset;
 use App\Models\User;
 use App\Services\AuthServices;
 use App\Services\CompanyServices;
+use App\Services\MailServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function __construct(AuthServices $authServices, CompanyServices $companyServices)
+    public function __construct(AuthServices $authServices, CompanyServices $companyServices, MailServices $mailServices)
     {
         $this->authServices = $authServices;
         $this->companyServices = $companyServices;
+        $this->mailServices = $mailServices;
     }
 
 
@@ -57,7 +59,7 @@ class AuthController extends Controller
         }
 
         $token = $this->authServices->createNewTokenReset($request->email);
-        $this->authServices->sendMailReset($request->email, $token);
+        $this->mailServices->sendMailResetPassword($request->email, $token);
     
         return view('auth.message', [
             'status' => true,
