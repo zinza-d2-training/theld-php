@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="col-4 mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" value="{{ $isEditing ? $user->email : '' }}" {{ $isEditing && Auth::user()->role_id != 1 ? 'disabled' : 'required' }}>
+                            <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" value="{{ $isEditing ? $user->email : '' }}" {{ $isEditing && Auth::user()->role_id != config('constant.role.admin') ? 'disabled' : 'required' }}>
                         </div>
                         <div class="col-4 mb-3">
                             <label for="name" class="form-label">Name</label>
@@ -33,7 +33,7 @@
                             <select class="form-select" name="company_id" id="role" aria-label="Default select example" required>
                                 <option selected disabled>Select company</option>
                                     @foreach ($companies as $company)
-                                        <option value="{{ $company->id }}" {{ ($isEditing && $user->company->id==$company->id ) || (Auth::user()->role_id==2) ? 'selected' : '' }}>{{ $company->name }}</option>
+                                        <option value="{{ $company->id }}" {{ ($isEditing && $user->company->id==$company->id ) || (Auth::user()->role_id == config('constant.role.ca_user')) ? 'selected' : '' }}>{{ $company->name }}</option>
                                     @endforeach
                             </select>
                         </div>
