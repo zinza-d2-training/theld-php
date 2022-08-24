@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Rules\admin;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserRequest extends FormRequest
@@ -25,6 +26,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'required',
+            'email' => ['required', 'email', 'unique:Users,email', new admin],
             'role_id' => 'required|exists:Roles,id',
             'company_id' => 'required|integer|exists:Companies,id',
             'dob' => 'nullable|date',

@@ -40,7 +40,8 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $this->userServices->storeUser($request->input());
-        
+        $this->userServices->sendMailNewUser($request->input());
+
         return redirect()->route('user.index')->withSuccess('Create User Successfully');
     }
 
@@ -61,7 +62,6 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $this->userServices->updateUser($request->input(), $user);
-
         return back()->withSuccess('Update profile successfully');
     }
 
