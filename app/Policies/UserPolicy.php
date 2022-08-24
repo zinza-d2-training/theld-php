@@ -25,10 +25,10 @@ class UserPolicy
         if ($auth->id == $user->id) {
             return false;
         }
-        if ($auth->role_id == User::role_admin) {
+        if ($auth->role_id == User::ROLE_ADMIN) {
             return true;
         }
-        elseif ($auth->role_id == User::role_company_account && $user->company && $auth->company->id == $user->company->id) {
+        elseif ($auth->role_id == User::ROLE_COMPANY_ACCOUNT && $user->company && $auth->company->id == $user->company->id) {
             return true;
         }
 

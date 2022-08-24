@@ -19,7 +19,7 @@ class CheckAdmin
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::user();
-        if ($user && $user->role_id == User::role_admin) {
+        if ($user && $user->role_id == User::ROLE_ADMIN) {
             return $next($request);
         }
 

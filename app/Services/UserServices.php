@@ -12,7 +12,7 @@ class UserServices extends Controller
 {
     public function getUsers()
     {
-        if (Auth::user()->role_id == User::role_admin) {
+        if (Auth::user()->role_id == User::ROLE_ADMIN) {
             $users = User::select('id', 'name', 'dob', 'status', 'role_id')
             ->where('id', '!=', Auth::id())
             ->orderBy('id', 'desc')
@@ -34,7 +34,7 @@ class UserServices extends Controller
 
     public function getCompanies()
     {
-        if (Auth::user()->role_id == User::role_company_account) {
+        if (Auth::user()->role_id == User::ROLE_COMPANY_ACCOUNT) {
             return [Auth::user()->company];
         }
         else {
@@ -52,7 +52,7 @@ class UserServices extends Controller
 
     public function storeUser($data)
     {
-        $data['company_id'] = Auth::user()->role_id==User::role_company_account ? Auth::user()->company->id : $data['company_id'];
+        $data['company_id'] = Auth::user()->role_id==User::ROLE_COMPANY_ACCOUNT ? Auth::user()->company->id : $data['company_id'];
         return User::create($data);
     }
 
