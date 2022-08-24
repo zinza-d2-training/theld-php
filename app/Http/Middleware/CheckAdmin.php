@@ -24,3 +24,5 @@ class CheckAdmin
         }
 
         return redirect()->route('home');
+    }
+}

@@ -22,4 +22,8 @@ return [
         'company' => 'images/company/default.png',
     ],
 
+    'paginate' => [
+        'maxRecord' => 10
+    ]
+
 ];

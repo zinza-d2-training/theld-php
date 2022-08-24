@@ -16,14 +16,14 @@ class UserServices extends Controller
             $users = User::select('id', 'name', 'dob', 'status', 'role_id')
             ->where('id', '!=', Auth::id())
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(config('constant.paginate.maxRecord'));
         }
         else {
             $users = User::select('id', 'name', 'dob', 'status', 'role_id', 'company_id')
             ->where('id', '!=', Auth::id())
             ->where('company_id', Auth::user()->company->id)
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(config('constant.paginate.maxRecord'));
         }
 
         foreach ($users as $user) {

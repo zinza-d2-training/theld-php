@@ -35,7 +35,7 @@ class CompanyController extends Controller
     public function store(StoreCompanyRequest $request)
     {
         $this->companyServices->storeCompany($request);
-        
+
         return redirect()->route('company.index')->withSuccess('Create Company Successfully');
     }
 
@@ -62,11 +62,9 @@ class CompanyController extends Controller
     {
         $deleted = $this->companyServices->deleteCompany($company);
 
-        if ($deleted) {
-            return redirect()->route('company.index')->withSuccess('Delete Company Successfully');
-        }
-        else {
+        if (!$deleted) {
             return back()->withErrors('Delete Company Failed');
         }
+        return redirect()->route('company.index')->withSuccess('Delete Company Successfully');
     }
 }
