@@ -14,7 +14,7 @@ class BirthdayCron extends Command
      *
      * @var string
      */
-    protected $signature = 'birthday:cron';
+    protected $signature = 'cron:birthday';
 
     /**
      * The console command description.

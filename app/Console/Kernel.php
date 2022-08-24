@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('birthday:cron')->everyMinute();
+        $schedule->command('cron:birthday')->everyFiveMinutes();
     }
 
     /**
