@@ -18,7 +18,17 @@ class Company extends Model
         'logo',
         'address',
         'max_user',
-        'experied_at',
+        'expired_at',
         'status'
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function companyAccount()
+    {
+        return $this->hasOne(User::class)->where('role_id', User::role_company_account);
+    }
 }
