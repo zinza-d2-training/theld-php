@@ -8,7 +8,9 @@
                     <li><a href="{{ route('user.index') }}" class="nav-link px-2 link-light">User</a></li>
                 @endif
                 @if (Auth::user()->role_id<=1)
+                    <li><a href="{{ route('company.index') }}" class="nav-link px-2 link-light">Company</a></li>
                     <li><a href="{{ route('topic.index') }}" class="nav-link px-2 link-light">Topic</a></li>
+                    <li><a href="{{ route('tag.index') }}" class="nav-link px-2 link-light">Tag</a></li>
                 @endif
             </ul>
 
