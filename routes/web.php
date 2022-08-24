@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TagController;
@@ -60,5 +61,14 @@ Route::middleware('auth')->group(function () {
         Route::get('edit/{tag}', [TagController::class, 'edit'])->name('edit');
         Route::post('update/{tag}', [TagController::class, 'update'])->name('update');
         Route::delete('delete/{tag}', [TagController::class, 'destroy'])->name('delete');
+    });
+    Route::middleware('admin')->name('company.')->prefix('company')->group(function () {
+        Route::get('', [CompanyController::class, 'index'])->name('index');
+        Route::get('create', [CompanyController::class, 'create'])->name('create');
+        Route::post('store', [CompanyController::class, 'store'])->name('store');
+        Route::get('edit/{company}', [CompanyController::class, 'edit'])->name('edit');
+        Route::post('update/{company}', [CompanyController::class, 'update'])->name('update');
+        Route::delete('delete/{company}', [CompanyController::class, 'destroy'])->name('delete');
+        Route::get('change-status/{company}', [CompanyController::class, 'updateStatus'])->name('updateStatus');
     });
 });
