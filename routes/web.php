@@ -53,15 +53,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('change-status/{user}', [UserController::class, 'updateStatus'])->name('updateStatus');
         });
     });
-
-    Route::middleware('admin')->name('tag.')->prefix('tag')->group(function () {
-        Route::get('', [TagController::class, 'index'])->name('index');
-        Route::get('create', [TagController::class, 'create'])->name('create');
-        Route::post('store', [TagController::class, 'store'])->name('store');
-        Route::get('edit/{tag}', [TagController::class, 'edit'])->name('edit');
-        Route::post('update/{tag}', [TagController::class, 'update'])->name('update');
-        Route::delete('delete/{tag}', [TagController::class, 'destroy'])->name('delete');
-    });
+    
     Route::middleware('admin')->name('company.')->prefix('company')->group(function () {
         Route::get('', [CompanyController::class, 'index'])->name('index');
         Route::get('create', [CompanyController::class, 'create'])->name('create');
@@ -70,5 +62,24 @@ Route::middleware('auth')->group(function () {
         Route::post('update/{company}', [CompanyController::class, 'update'])->name('update');
         Route::delete('delete/{company}', [CompanyController::class, 'destroy'])->name('delete');
         Route::get('change-status/{company}', [CompanyController::class, 'updateStatus'])->name('updateStatus');
+    });
+
+    Route::middleware('admin')->name('topic.')->prefix('topic')->group(function () {
+        Route::get('', [TopicController::class, 'index'])->name('index');
+        Route::get('create', [TopicController::class, 'create'])->name('create');
+        Route::post('store', [TopicController::class, 'store'])->name('store');
+        Route::get('edit/{topic}', [TopicController::class, 'edit'])->name('edit');
+        Route::post('update/{topic}', [TopicController::class, 'update'])->name('update');
+        Route::delete('delete/{topic}', [TopicController::class, 'destroy'])->name('delete');
+        Route::delete('change-status/{topic}', [TopicController::class, 'updateStatus'])->name('updateStatus');
+    });
+    
+    Route::middleware('admin')->name('tag.')->prefix('tag')->group(function () {
+        Route::get('', [TagController::class, 'index'])->name('index');
+        Route::get('create', [TagController::class, 'create'])->name('create');
+        Route::post('store', [TagController::class, 'store'])->name('store');
+        Route::get('edit/{tag}', [TagController::class, 'edit'])->name('edit');
+        Route::post('update/{tag}', [TagController::class, 'update'])->name('update');
+        Route::delete('delete/{tag}', [TagController::class, 'destroy'])->name('delete');
     });
 });
