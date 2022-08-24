@@ -5,8 +5,9 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="{{ route('home') }}" class="nav-link px-2 link-light">Home</a></li>
                 @if (Auth::user()->role_id<=2)
-                    <li><a href="{{ route('user.index') }}" class="nav-link px-2 link-light">User</a></li>
+                    <li><a href="{{ route('user.index') }}" class="nav-link px-2 link-light">Users</a></li>
                 @endif
+                <li><a href="{{ route('post.index') }}" class="nav-link px-2 link-light">{{ Auth::user()->role_id == config('constant.user.role.member') ? 'Posts' : 'My Posts' }}</a></li>
             </ul>
 
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">

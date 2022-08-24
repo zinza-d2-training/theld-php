@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -49,5 +50,14 @@ Route::middleware('auth')->group(function () {
             Route::delete('delete/{user}', [UserController::class, 'delete'])->name('delete');
             Route::delete('change-status/{user}', [UserController::class, 'updateStatus'])->name('updateStatus');
         });
+    });
+
+    Route::name('post.')->prefix('post')->group(function () {
+        Route::get('', [PostController::class, 'index'])->name('index');
+        Route::get('create', [PostController::class, 'create'])->name('create');
+        Route::post('store', [PostController::class, 'store'])->name('store');
+        Route::get('edit/{post}', [PostController::class, 'edit'])->name('edit');
+        Route::post('update/{post}', [PostController::class, 'update'])->name('update');
+        Route::delete('delete/{post}', [PostController::class, 'destroy'])->name('delete');
     });
 });

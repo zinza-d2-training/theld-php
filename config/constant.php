@@ -22,4 +22,21 @@ return [
         'company' => 'images/company/default.png',
     ],
 
+    'user' => [
+        'role' => [
+            'admin' => 1,
+            'ca_user' => 2,
+            'member' => 3
+        ]
+    ],
+
+    'post' => [
+        'status' => [
+            'rejected' => -1,
+            'waiting' => 0,
+            'unsolved' => 1,
+            'resolved' => 2
+        ]
+    ]
+
 ];
