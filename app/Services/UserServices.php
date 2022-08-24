@@ -40,7 +40,7 @@ class UserServices extends Controller
         else {
             return Company::select('id', 'name', 'max_user', 'expired_at', 'status')
             ->where('expired_at', '>', now())
-            ->where('status', Company::status_activate)
+            ->where('status', Company::STATUS_ACTIVATE)
             ->get();
         }
     }

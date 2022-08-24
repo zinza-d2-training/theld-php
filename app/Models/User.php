@@ -15,8 +15,8 @@ class User extends Authenticatable
 
     const ROLE_ADMIN = 1;
     const ROLE_COMPANY_ACCOUNT = 2;
-    const STATUS_ACTIVE = 1;
-    const STATUS_DEACTIVE = 0;
+    const STATUS_ACTIVATE = 1;
+    const STATUS_DEACTIATVE = 0;
 
     /**
      * The attributes that are mass assignable.

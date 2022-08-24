@@ -10,8 +10,8 @@ class Company extends Model
 {
     use HasFactory, SoftDeletes;
 
-    const status_activate = 1;
-    const status_deactivate = 0;
+    const STATUS_ACTIVATE = 1;
+    const STATUS_DEACTIVATE = 0;
 
     protected $fillable = [
         'name',
@@ -29,6 +29,6 @@ class Company extends Model
 
     public function companyAccount()
     {
-        return $this->hasOne(User::class)->where('role_id', User::role_company_account);
+        return $this->hasOne(User::class)->where('role_id', User::ROLE_COMPANY_ACCOUNT);
     }
 }

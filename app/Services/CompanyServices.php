@@ -56,7 +56,7 @@ class CompanyServices
         if (Auth::user()->role_id == User::ROLE_ADMIN){
             return true;
         }
-        return $company->status == Company::status_activate;
+        return $company->status == Company::STATUS_ACTIVATE;
     }
 
     public function deleteCompany($company)
