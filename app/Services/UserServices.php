@@ -13,22 +13,19 @@ class UserServices extends Controller
     public function getUsers()
     {
         if (Auth::user()->role_id == User::ROLE_ADMIN) {
-            $users = User::select('id', 'name', 'dob', 'status', 'role_id')
+            $users = User::with('role')
             ->where('id', '!=', Auth::id())
             ->orderBy('id', 'desc')
             ->paginate(config('constant.paginate.maxRecord'));
         }
         else {
-            $users = User::select('id', 'name', 'dob', 'status', 'role_id', 'company_id')
+            $users = User::with('role')
             ->where('id', '!=', Auth::id())
             ->where('company_id', Auth::user()->company->id)
             ->orderBy('id', 'desc')
             ->paginate(config('constant.paginate.maxRecord'));
         }
 
-        foreach ($users as $user) {
-            $user->role;
-        }
         return $users;
     }
 

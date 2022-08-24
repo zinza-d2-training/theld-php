@@ -11,13 +11,11 @@ class CompanyServices
     public function getCompanies()
     {
         $companies = Company::select('id', 'name', 'status', 'max_user')
+        ->withCount('users')
+        ->with('companyAccount')
         ->orderBy('id', 'desc')
         ->paginate(10);
 
-        foreach ($companies as $company) {
-            $company->companyAccount;
-            $company->countUser = $company->users->count();
-        }
         return $companies;
     }
 

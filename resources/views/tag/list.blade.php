@@ -46,6 +46,7 @@
 @endsection
 
 @section('master-script')
+@parent
     <script>
         function deleteUser(e) {
             if (confirm('Delete this tag?'))

@@ -24,7 +24,7 @@
                             <div class="col">{{$topic->name}}</div>
                         </div>
                     </td>
-                    <td>{{$topic->countPost}}</td>
+                    <td>{{$topic->posts_count}}</td>
                     <td>
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -50,6 +50,7 @@
 @endsection
 
 @section('master-script')
+@parent
     <script>
         function deleteUser(e) {
             if (confirm('Delete this tag?'))

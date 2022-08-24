@@ -19,7 +19,7 @@ class Admin implements InvokableRule
     public function __invoke($attribute, $value, $fail)
     {
         if (Auth::user()->role_id !== User::ROLE_ADMIN){
-            $fail('Only admin can edit email');
+            $fail('Only admin can edit :attribute');
         }
     }
 }
