@@ -4,7 +4,7 @@
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="{{ route('home') }}" class="nav-link px-2 link-light">Home</a></li>
-                @if (Auth::user()->role_id<=2)
+                @if (Auth::user()->role_id <= config('constant.role.ca_user'))
                     <li><a href="{{ route('user.index') }}" class="nav-link px-2 link-light">User</a></li>
                 @endif
                 @if (Auth::user()->role_id<=1)

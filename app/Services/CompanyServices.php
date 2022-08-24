@@ -53,7 +53,7 @@ class CompanyServices
     {
         $company = Company::find($id);
 
-        if (Auth::user()->role_id == User::role_admin){
+        if (Auth::user()->role_id == User::ROLE_ADMIN){
             return true;
         }
         return $company->status == Company::status_activate;

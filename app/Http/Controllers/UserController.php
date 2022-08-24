@@ -7,13 +7,16 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use App\Models\UserCompany;
+use App\Services\MailServices;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function __construct(UserServices $userServices)
+    public function __construct(UserServices $userServices, MailServices $mailServices)
     {
         $this->userServices = $userServices;
+        $this->mailServices = $mailServices;
     }
 
     public function index()
@@ -40,7 +43,8 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $this->userServices->storeUser($request->input());
-        
+        $this->mailServices->sendMailNewUser($request->email, $request->input());
+
         return redirect()->route('user.index')->withSuccess('Create User Successfully');
     }
 
@@ -61,7 +65,6 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $this->userServices->updateUser($request->input(), $user);
-
         return back()->withSuccess('Update profile successfully');
     }
 

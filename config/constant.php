@@ -17,10 +17,13 @@ return [
     */
 
     'images' => [
-
         'user' => 'images/user/default.png',
         'company' => 'images/company/default.png',
     ],
+    'role' => [
+        'admin' => 1,
+        'ca_user' => 2,
+    ]
 
     'paginate' => [
         'maxRecord' => 10

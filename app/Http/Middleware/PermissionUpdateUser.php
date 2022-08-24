@@ -19,7 +19,7 @@ class PermissionUpdateUser
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::user();
-        if ($user && $user->role_id <= User::role_company_account)
+        if ($user && $user->role_id <= User::ROLE_COMPANY_ACCOUNT)
             return $next($request);
 
         return redirect()->route('home');
