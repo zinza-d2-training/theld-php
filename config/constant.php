@@ -22,7 +22,7 @@ return [
     ],
     'role' => [
         'admin' => 1,
-        'ca_user' => 2,
+        'ca_user' => 2
     ],
 
     'paginate' => [
