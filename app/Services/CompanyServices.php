@@ -40,6 +40,13 @@ class CompanyServices
             $data['logo'] = $request->logo->storeAs('images/company', $fileName);
         }
 
+        $data = $request->input();
+
+        if ($request->hasFile('logo')) {
+            $fileName = $request->logo->hashName();
+            $data['logo'] = $request->logo->storeAs('images/company', $fileName);
+        }
+
         $count = $company->users->count();
         if ($data['max_user'] < $count) {
             return false;
