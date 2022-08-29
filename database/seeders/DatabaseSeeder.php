@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Comment;
 use App\Models\Company;
 use App\Models\Post;
 use App\Models\role;
@@ -19,13 +20,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)->create();
-        Company::factory(10)->create();
-        Post::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // User::factory(10)->create();
+        // Company::factory(10)->create();
+        // Post::factory(10)->create();
+        Comment::factory(30)->create();
     }
 }

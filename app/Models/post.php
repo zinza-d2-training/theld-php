@@ -20,7 +20,8 @@ class Post extends Model
         'description',
         'topic_id',
         'user_id',
-        'status'
+        'status',
+        'is_pinned'
     ];
 
     public function users()
@@ -36,5 +37,10 @@ class Post extends Model
     public function postTags()
     {
         return $this->hasMany(PostTag::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }
