@@ -8,8 +8,7 @@ class TopicServices
 {
     public function getTopics()
     {
-        $topics = Topic::orderBy('id', 'desc')
-        ->withCount('posts')
+        $topics = Topic::withCount('posts')
         ->paginate(10);
 
         return $topics;

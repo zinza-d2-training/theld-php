@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// GUEST
 Route::middleware('guest')->name('auth.')->group(function () {
     Route::get('login', [AuthController::class, 'index'])->name('login');
     Route::post('checkpoint', [AuthController::class, 'checkpoint'])->name('checkpoint');
@@ -36,13 +37,19 @@ Route::middleware('guest')->name('auth.')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 
+    // Dashboard
     Route::get('', [DashboardController::class, 'index'])->name('home');
+    Route::get('t/{slug}', [DashboardController::class, 'topicDetail'])->name('topicDetail');
+    Route::get('s', [DashboardController::class, 'search'])->name('search');
+    Route::get('p/{slug}', [DashboardController::class, 'postDetail'])->name('postDetail');
 
+    // Profile
     Route::name('profile.')->group(function () {
         Route::get('profile', [ProfileController::class, 'edit'])->name('edit');
         Route::post('profile', [ProfileController::class, 'update'])->name('update');
     });
 
+    // User
     Route::middleware('permission.updateUser')->name('user.')->prefix('user')->group(function () {
         Route::get('', [UserController::class, 'index'])->name('index');
         Route::get('create', [UserController::class, 'create'])->name('create');
@@ -57,6 +64,7 @@ Route::middleware('auth')->group(function () {
         });
     });
     
+    // Company
     Route::middleware('admin')->name('company.')->prefix('company')->group(function () {
         Route::get('', [CompanyController::class, 'index'])->name('index');
         Route::get('create', [CompanyController::class, 'create'])->name('create');
@@ -67,6 +75,7 @@ Route::middleware('auth')->group(function () {
         Route::get('change-status/{company}', [CompanyController::class, 'updateStatus'])->name('updateStatus');
     });
 
+    // Topic
     Route::middleware('admin')->name('topic.')->prefix('topic')->group(function () {
         Route::get('', [TopicController::class, 'index'])->name('index');
         Route::get('create', [TopicController::class, 'create'])->name('create');
@@ -77,6 +86,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('change-status/{topic}', [TopicController::class, 'updateStatus'])->name('updateStatus');
     });
     
+    // Tag
     Route::middleware('admin')->name('tag.')->prefix('tag')->group(function () {
         Route::get('', [TagController::class, 'index'])->name('index');
         Route::get('create', [TagController::class, 'create'])->name('create');
@@ -86,6 +96,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('delete/{tag}', [TagController::class, 'destroy'])->name('delete');
     });
 
+    // Post
     Route::name('post.')->prefix('post')->group(function () {
         Route::get('', [PostController::class, 'index'])->name('index');
         Route::get('create', [PostController::class, 'create'])->name('create');

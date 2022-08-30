@@ -12,7 +12,7 @@
                         @foreach ($topics as $topic)
                             <div class="topic-item">
                                 <div class="row">
-                                    <div class="col-md-2"><b>{{ $topic->name }}</b></div>
+                                    <div class="col-md-2"><a class="text-decoration-none link-dark" href="{{ route('topicDetail', ['slug' => $topic->slug]) }}"><b>{{ $topic->name }}</b></a></div>
                                     <div class="col-md-4">{{ $topic->posts_count }} <i class="fa-solid fa-rectangle-list"></i> - {{ $topic->comments_count }} <i class="fa-solid fa-message"></i></div>
                                     <div class="col-md-6">
                                         @if ($post = $topic->posts->first())
@@ -29,7 +29,7 @@
                             <div class="topic-title">
                                 <div class="d-flex justify-content-between">
                                     <div><b>{{ $topic->name }}</b></div>
-                                    <div><a class="text-light" href="">Read more >></a></div>
+                                    <div><a class="text-light" href="{{ route('topicDetail', ['slug' => $topic->slug]) }}">Read more >></a></div>
                                 </div>
                             </div>
                             @foreach ($topic->posts as $post)
@@ -40,9 +40,7 @@
                 </div>
             </div>
             <div class="col-xl-3 col-md-0">
-                <div class="content-area px-4 py-2">
-                    <b>New Post:</b>
-                </div>
+                <x-dashboard.new-posts-table />
             </div>
         </div>
     </div>

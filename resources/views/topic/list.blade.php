@@ -21,7 +21,7 @@
                     <th><input type="checkbox" name="" id=""></th>
                     <td>
                         <div class="row">
-                            <div class="col">{{$topic->name}}</div>
+                            <div class="col"><a class="text-decoration-none link-dark" href="{{ route('topicDetail', ['slug' => $topic->slug]) }}">{{$topic->name}}</a></div>
                         </div>
                     </td>
                     <td>{{$topic->posts_count}}</td>

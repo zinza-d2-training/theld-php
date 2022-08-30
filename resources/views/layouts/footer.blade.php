@@ -1,9 +1,11 @@
 <footer class="text-center text-lg-start text-white" style="background-color: #1c2331">
     <div class="container-fluid" style="background-color: #6351ce">
-        <section class="d-flex justify-content-between p-4">
-            <div class="me-5">
-                <a href="#" class="nav-link p-0 link-light">Topic 1</a>
-            </div>
+        <section class="d-flex p-4">
+                @foreach ($footerTopics as $footerTopic)
+                    <div class="me-5">
+                        <a href="#" class="nav-link p-0 link-light">{{ $footerTopic->name }}</a>
+                    </div>
+                @endforeach
         </section>
     </div>
 

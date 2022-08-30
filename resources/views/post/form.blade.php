@@ -14,13 +14,13 @@
                     <div class="row">
                         <div class="col-6 mb-3">
                             <label for="title" class="form-label">Title</label>
-                            <input name="title" type="text" class="form-control" id="title" placeholder="Title" aria-describedby="emailHelp" value="{{ $isEditing ? $post->title : '' }}" required {{ Auth::user()->role_id != config('constant.role.member') ? 'disabled' : '' }}>
+                            <input name="title" type="text" class="form-control" id="title" placeholder="Title" aria-describedby="emailHelp" value="{{ $isEditing ? $post->title : '' }}" required {{ $isEditing && Auth::user()->role_id != config('constant.role.member') ? 'disabled' : '' }}>
                         </div>
                     </div>
                     <div class="row">
                         <div class="mb-3">
                             <label for="title" class="form-label">Description</label>
-                            <textarea name="description" id="description"  {{ Auth::user()->role_id != config('constant.role.member') ? 'disabled' : '' }}>
+                            <textarea name="description" id="description" contenteditable="false"  {{ $isEditing && Auth::user()->role_id != config('constant.role.member') ? 'disabled' : '' }}>
                                 {{ $isEditing ? $post->description : '' }}
                              </textarea>
                         </div>
@@ -105,6 +105,8 @@
         VirtualSelect.init({ 
             ele: '#tags' 
         });
+        // document.querySelector(".fr-element").setAttribute('contenteditable', 'false')
+        console.log(document.querySelector(".fr-element"));
         document.querySelector(".vscomp-toggle-button").classList.add("form-control");
     </script>
 @endsection

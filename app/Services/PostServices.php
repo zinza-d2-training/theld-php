@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\PostTag;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PostServices extends Controller
 {
@@ -14,6 +15,7 @@ class PostServices extends Controller
     {
         if (Auth::user()->role_id == User::ROLE_ADMIN) {
             $posts = Post::with('tags')
+            ->orderBy('is_pinned', 'desc')
             ->orderBy('id', 'desc')
             ->paginate(10);
         }
@@ -22,12 +24,14 @@ class PostServices extends Controller
             ->whereHas('users', fn ($query) =>
                 $query->where('company_id', '=', Auth::user()->company_id)
             )
+            ->orderBy('is_pinned', 'desc')
             ->orderBy('id', 'desc')
             ->paginate(10);
         }
         else {
             $posts = Post::with('users')
             ->where('user_id', Auth::id())
+            ->orderBy('is_pinned', 'desc')
             ->orderBy('id', 'desc')
             ->paginate(10);
         }
