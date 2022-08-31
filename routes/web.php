@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\commentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MailController;
@@ -105,6 +106,18 @@ Route::middleware('auth')->group(function () {
             Route::get('edit/{post}', [PostController::class, 'edit'])->name('edit');
             Route::post('update/{post}', [PostController::class, 'update'])->name('update');
             Route::delete('delete/{post}', [PostController::class, 'destroy'])->name('delete');
+        });
+        Route::put('pin/{post}', [PostController::class, 'pin'])->middleware('admin')->name('pin');
+    });
+
+    // Comment
+    Route::name('comment.')->prefix('comment')->group(function () {
+        Route::post('store/{post}', [commentController::class, 'store'])->name('store');
+        Route::get('reaction/{id}', [commentController::class, 'reaction'])->name('reaction');
+        Route::get('resolved/{comment}', [commentController::class, 'resolved'])->name('resolved');
+        Route::middleware('can:updatePost,post')->group(function () {
+            Route::post('update/{post}', [commentController::class, 'update'])->name('update');
+            Route::delete('delete/{post}', [commentController::class, 'destroy'])->name('delete');
         });
     });
 });

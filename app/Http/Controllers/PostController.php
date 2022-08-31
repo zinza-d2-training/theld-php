@@ -130,4 +130,11 @@ class PostController extends Controller
         }
         return redirect()->route('post.index')->withSuccess('Delete Post Successfully');
     }
+
+    public function pin(Post $post)
+    {
+        $post->update(['is_pinned' => !$post->is_pinned]);
+
+        return back()->withSuccess($post->is_pinned ? 'Pin successfully' : 'Unpin successfully');
+    }
 }

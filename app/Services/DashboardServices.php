@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Topic;
 use App\Models\User;
@@ -18,11 +19,7 @@ class DashboardServices
         } else {
             $topics = Topic::withCount('posts')
             ->with(['posts' => function($query) {
-
                 return $query->with('users')
-                ->whereHas('users', fn ($query) =>
-                    Auth::user()->role_id != User::ROLE_ADMIN ? $query->where('company_id', '=', Auth::user()->company_id) : ''
-                )
                 ->withCount('comments')
                 ->orderBy('is_pinned', 'desc')
                 ->orderBy('id', 'desc')
@@ -30,7 +27,7 @@ class DashboardServices
             }])
             ->withCount('comments')
             ->get();
-            Cache::put('dashboard', $topics, 60);
+            Cache::put('dashboard', $topics, 30);
         }
         return $topics;
     }
@@ -41,9 +38,6 @@ class DashboardServices
 
         $posts = Post::select(DB::raw("id, user_id, created_at, title, is_pinned, LEFT(`description`, 45) as `description`"))
         ->with('users')
-        ->whereHas('users', fn ($query) =>
-            Auth::user()->role_id != User::ROLE_ADMIN ? $query->where('company_id', '=', Auth::user()->company_id) : ''
-        )
         ->orderBy('is_pinned', 'desc')
         ->orderBy('id', 'desc')
         ->limit($postLimit)
@@ -52,7 +46,6 @@ class DashboardServices
         return $posts;
     }
     
-
     public function getPostInTopic($topicSlug)
     {
         $topic = Topic::where('slug', $topicSlug)->first();
@@ -61,9 +54,6 @@ class DashboardServices
         if ($topic) {
             $posts = Post::where('topic_id', $topic->id)
             ->withCount('comments')
-            ->whereHas('users', fn ($query) =>
-                Auth::user()->role_id != User::ROLE_ADMIN ? $query->where('company_id', '=', Auth::user()->company_id) : ''
-            )
             ->with('users')
             ->orderBy('is_pinned', 'desc')
             ->orderBy('id', 'desc')
@@ -76,14 +66,10 @@ class DashboardServices
         ];
     }
     
-
     public function getPostBySearch($searchContent)
     {
         $posts = Post::where('title', 'LIKE', "%{$searchContent}%")
         ->orWhere('description', 'LIKE', "%{$searchContent}%")
-        ->whereHas('users', fn ($query) =>
-            Auth::user()->role_id != User::ROLE_ADMIN ? $query->where('company_id', '=', Auth::user()->company_id) : ''
-        )
         ->withCount('comments')
         ->with('users')
         ->orderBy('is_pinned', 'desc')
@@ -93,5 +79,18 @@ class DashboardServices
         return [
             'posts' => $posts
         ];
+    }
+     
+    public function getPostDetail($slug)
+    {
+        $post = Post::where('slug', $slug)
+        ->with('users')->with('tags')->first();
+
+        return $post;
+    }
+
+    public static function CheckAdminAndCA($request_company_id)
+    {
+        return (Auth::user()->role_id == User::ROLE_ADMIN || (Auth::user()->role_id == User::ROLE_COMPANY_ACCOUNT && Auth::user()->company_id == $request_company_id) );
     }
 }
