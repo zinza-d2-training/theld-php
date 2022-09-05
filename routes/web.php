@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
 
     // Profile
     Route::name('profile.')->group(function () {
-        Route::get('profile', [ProfileController::class, 'edit'])->name('edit');
+        Route::get('profile', 'ProfileController@edit')->name('edit');
         Route::post('profile', [ProfileController::class, 'update'])->name('update');
     });
 
@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
             Route::get('edit/{user}', [UserController::class, 'edit'])->name('edit');
             Route::post('update/{user}', [UserController::class, 'update'])->name('update');
             Route::delete('delete/{user}', [UserController::class, 'delete'])->name('delete');
+            Route::delete('delete-multiple/{user[]}', [UserController::class, 'deleteMultiple'])->name('deleteMultiple');
             Route::delete('change-status/{user}', [UserController::class, 'updateStatus'])->name('updateStatus');
         });
     });

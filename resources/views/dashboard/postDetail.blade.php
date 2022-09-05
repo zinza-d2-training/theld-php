@@ -102,7 +102,6 @@
         function deleteUser(e) {
             if (confirm('Delete this post?')) e.parentNode.submit()
         }
-
     </script>
 @endsection
 

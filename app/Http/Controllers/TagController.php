@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Tag\StoreTagRequest;
+use App\Http\Requests\Tag\UpdateTagRequest;
 use App\Models\Tag;
 use App\Services\TagServices;
 
@@ -86,7 +87,7 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreTagRequest $request, Tag $tag)
+    public function update(UpdateTagRequest $request, Tag $tag)
     {
         $this->tagServices->updateTag($request->input(), $tag);
 

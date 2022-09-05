@@ -4,7 +4,7 @@ namespace App\Http\Requests\Tag;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTagRequest extends FormRequest
+class UpdateTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class StoreTagRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:1|unique:tags,name'
+            'name' => ['required', 'min:1', 'unique:tags,name,' . $this->tag->id]
         ];
     }
 }

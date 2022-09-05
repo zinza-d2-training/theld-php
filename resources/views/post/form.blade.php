@@ -46,22 +46,22 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-6 mb-3">
-                            @if ( Auth::user()->role_id == config('constant.role.member') )
-                                @if($isEditing)
+                    @if ($isEditing)
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                @if ( Auth::user()->role_id == config('constant.role.member') )
                                     Status: <x-post.status :status="$post->status"/>
+                                @else
+                                    <label for="status" class="form-label">Status</label>
+                                        <select class="form-select" name="status" id="status" aria-label="Default select example" required>
+                                            @foreach (config('constant.post.status') as $name => $status)
+                                                <option value="{{ $status }}" {{ $isEditing && $post->status == $status ? 'selected' : '' }}>{{ $name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 @endif
-                            @else
-                                <label for="status" class="form-label">Status</label>
-                                    <select class="form-select" name="status" id="status" aria-label="Default select example" required>
-                                        @foreach (config('constant.post.status') as $name => $status)
-                                            <option value="{{ $status }}" {{ $isEditing && $post->status == $status ? 'selected' : '' }}>{{ $name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endif
-                    </div>
+                        </div>
+                    @endif
 
                     <button type="submit" class="btn btn-primary">Upload</button>
                 </form>
