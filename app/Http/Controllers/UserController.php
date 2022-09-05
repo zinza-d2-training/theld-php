@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+    private $userServices;
+    private $mailServices;
+
     public function __construct(UserServices $userServices, MailServices $mailServices)
     {
         $this->userServices = $userServices;

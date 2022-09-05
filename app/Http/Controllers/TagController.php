@@ -8,6 +8,8 @@ use App\Services\TagServices;
 
 class TagController extends Controller
 {
+    private $tagServices;
+    
     public function __construct(TagServices $tagServices)
     {
         $this->tagServices = $tagServices;

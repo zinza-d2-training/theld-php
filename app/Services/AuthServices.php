@@ -7,7 +7,13 @@ use App\Mail\ResetPasswordEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-class AuthServices {
+class AuthServices
+{
+    public function checkUser()
+    {
+        
+    }
+
     public function createNewTokenReset($emailAddress)
     {
         $token = Str::random(64);

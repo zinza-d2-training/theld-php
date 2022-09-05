@@ -6,7 +6,7 @@
                 <div>
                     <div class="">
                         {!! $post->is_pinned ? '<i class="fa-solid fa-thumbtack text-primary" data-bs-toggle="tooltip" title="Pinned"></i>' : '' !!}
-                        <span class="title"><b>{{ $post->title }}</b></span>
+                        <a class="text-decoration-none link-dark" href="{{ route('postDetail', ['slug' => $post->slug]) }}"><b>{{ $post->title }}</b></a>
                     </div>
                     <div class="mb-1">
                         {{ $post->description }}...

@@ -3,7 +3,7 @@
         <section class="d-flex p-4">
                 @foreach ($footerTopics as $footerTopic)
                     <div class="me-5">
-                        <a href="#" class="nav-link p-0 link-light">{{ $footerTopic->name }}</a>
+                        <a href="{{ route('topicDetail', ['slug' => $footerTopic->slug]) }}" class="nav-link p-0 link-light">{{ $footerTopic->name }}</a>
                     </div>
                 @endforeach
         </section>

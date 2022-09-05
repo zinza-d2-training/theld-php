@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
+    private $topicServices;
+    private $postServices;
+    private $dashboardServices;
+    private $commentServices;
+
     public function __construct(TopicServices $topicServices, PostServices $postServices, DashboardServices $dashboardServices, CommentServices $commentServices)
     {
         $this->topicServices = $topicServices;

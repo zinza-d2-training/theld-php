@@ -17,13 +17,13 @@
                 <i class="fa-solid fa-check-double"></i> Resolved
             </span>
         @endif
-        <span onclick="reactComment(this, {{ $comment->id }})" class="border px-2 btn text-decoration-none btn-{{ $comment->reactions_exists ? 'danger' : 'light' }}" data-bs-toggle="tooltip" data-bs-original-title="Like Comment">
+        <span onclick="reactComment(this, {{ $comment->id }})" class="border px-2 btn text-decoration-none {{ $comment->reactions_exists ? 'btn-danger' : '' }}" data-bs-toggle="tooltip" data-bs-original-title="Like Comment">
             <b>{{ $comment->reactions_count }}</b> <i class="fa-solid fa-heart"></i>
-        </a>
+        </span>
         @if ($isOwner)
-            <a href="{{ route('comment.resolved', ['comment' => $comment->id]) }}"  class="border px-2 btn px-2  btn-{{ $comment->is_resolve ? 'success' : 'light' }}"  data-bs-toggle="tooltip" data-bs-original-title="Tick as resolve post">
+            <a href="{{ route('comment.resolved', ['comment' => $comment->id]) }}"  class="border px-2 btn px-2 {{ $comment->is_resolve ? 'btn-success' : '' }}"  data-bs-toggle="tooltip" data-bs-original-title="Tick as resolve post">
                 <i class="fa-solid fa-check-double"></i>
-            </span>
+            </a>
         @endif
         
 

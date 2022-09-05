@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class TopicController extends Controller
 {
+    private $topicServices;
+    
     public function __construct(TopicServices $topicServices)
     {
         $this->topicServices = $topicServices;

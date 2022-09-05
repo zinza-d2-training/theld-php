@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 
 class commentController extends Controller
 {
+    private $commentServices;
+    private $dashboardServices;
+
     public function __construct(DashboardServices $dashboardServices, CommentServices $commentServices)
     {
         $this->commentServices = $commentServices;

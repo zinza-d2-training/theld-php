@@ -36,7 +36,8 @@ class DashboardServices
     {
         $postLimit = 5;
 
-        $posts = Post::select(DB::raw("id, user_id, created_at, title, is_pinned, LEFT(`description`, 45) as `description`"))
+        $posts = Post::select(DB::raw("id, user_id, created_at, title, is_pinned, slug, LEFT(`description`, 45) as `description`"))
+        ->where('status', '>', 0)
         ->with('users')
         ->orderBy('is_pinned', 'desc')
         ->orderBy('id', 'desc')

@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    private $postServices;
+    private $topicServices;
+    private $tagServices;
+    private $mailServices;
+
     public function __construct(PostServices $postServices, TopicServices $topicServices, TagServices $tagServices, MailServices $mailServices)
     {
         $this->postServices = $postServices;

@@ -20,7 +20,7 @@
                 <tr>
                     <th><input type="checkbox" name="" id=""></th>
                     <td><x-tag.item :name="$tag->name" :color="$tag->color"/></td>
-                    <td>{{$tag->countPost}}</td>
+                    <td>{{$tag->posts_count}}</td>
                     <td>
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
