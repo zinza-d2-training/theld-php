@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use App\Models\Role;
+use App\Models\PostTag;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,11 +13,12 @@ class PostServices extends Controller
     public function getPosts()
     {
         if (Auth::user()->role_id == User::ROLE_ADMIN) {
-            $posts = Post::orderBy('id', 'desc')
+            $posts = Post::with('tags')
+            ->orderBy('id', 'desc')
             ->paginate(10);
         }
         elseif (Auth::user()->role_id == User::ROLE_COMPANY_ACCOUNT) {
-            $posts = Post::with('users')
+            $posts = Post::with('tags')->with('users')
             ->whereHas('users', fn ($query) =>
                 $query->where('company_id', '=', Auth::user()->company_id)
             )
@@ -33,25 +34,50 @@ class PostServices extends Controller
         return $posts;
     }
 
-    public function getRoles()
+    public function storePost($request)
     {
-        return Role::select('id', 'name')->where('id', '>', 1)->get();
+        $data = $request->input();
+        $data['user_id'] = Auth::id();
+        $data['status'] = Post::STATUS_WAITING;
+
+        $data['tags'] ? $tags = explode(",", $data['tags']) : '';
+        unset($data['tags']);
+
+        $post = Post::create($data);
+
+        isset($tags) ? $this->storePostTags($post->id, $tags) : '';
+
+        return true;
     }
 
-    public function storeUser($data)
+    public function storePostTags($post_id, $tags)
     {
-        $data['company_id'] = Auth::user()->role_id==User::ROLE_ADMIN ? Auth::user()->company->id : $data['company_id'];
-        return User::create($data);
+        foreach ($tags as $tag_id) {
+            PostTag::create([
+                'post_id' => $post_id,
+                'tag_id' => $tag_id
+            ]);
+        }
+        return;
     }
 
-    public function updateUser($data, User $user)
+    public function updatePost($request, $post)
     {
-        return $user->update($data);
+        $data = $request->input();
+        $data['tags'] ? $tags = explode(",", $data['tags']) : '';
+        unset($data['tags']);
+
+        $post->update($data);
+
+        $post->postTags()->delete();
+        isset($tags) ? $this->storePostTags($post->id, $tags) : '';
+
+        return true;
     }
 
-    public function deleteUser(User $user)
+    public function deletePost($post)
     {
-        $user->delete();
-        return $user->trashed();
+        $post->delete();
+        return $post->trashed();
     }
 }

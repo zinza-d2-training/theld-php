@@ -41,6 +41,7 @@
 @endsection
 
 @section('master-script')
+@parent
     <script>
         var toastElList = [].slice.call(document.querySelectorAll('.toast'))
         var toastList = toastElList.map(function (toastEl) {

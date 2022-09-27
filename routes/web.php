@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TopicController;
@@ -83,5 +84,16 @@ Route::middleware('auth')->group(function () {
         Route::get('edit/{tag}', [TagController::class, 'edit'])->name('edit');
         Route::post('update/{tag}', [TagController::class, 'update'])->name('update');
         Route::delete('delete/{tag}', [TagController::class, 'destroy'])->name('delete');
+    });
+
+    Route::name('post.')->prefix('post')->group(function () {
+        Route::get('', [PostController::class, 'index'])->name('index');
+        Route::get('create', [PostController::class, 'create'])->name('create');
+        Route::post('store', [PostController::class, 'store'])->name('store');
+        Route::middleware('can:updatePost,post')->group(function () {
+            Route::get('edit/{post}', [PostController::class, 'edit'])->name('edit');
+            Route::post('update/{post}', [PostController::class, 'update'])->name('update');
+            Route::delete('delete/{post}', [PostController::class, 'destroy'])->name('delete');
+        });
     });
 });

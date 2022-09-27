@@ -2,18 +2,23 @@
 
 namespace App\Services;
 
+use App\Models\PostTag;
 use App\Models\Tag;
 
 class TagServices
 {
     public function getTags()
     {
-        $tags = Tag::orderBy('id', 'desc')->paginate(10);
+        $tags = Tag::orderBy('id', 'desc')
+        ->withCount('posts')
+        ->paginate(10);
 
-        foreach ($tags as $tag) {
-            $tag->countPost = $tag->posts->count();
-        }
         return $tags;
+    }
+
+    public function getAll()
+    {
+        return Tag::all();
     }
 
     public function storeTag($data)

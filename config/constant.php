@@ -28,6 +28,15 @@ return [
 
     'paginate' => [
         'maxRecord' => 10
+    ],
+
+    'post' => [
+        'status' => [
+            'rejected' => -1,
+            'waiting' => 0,
+            'unsolved' => 1,
+            'resolved' => 2
+        ]
     ]
 
 ];

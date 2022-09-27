@@ -21,7 +21,6 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-            'avatar' => fake()->imageUrl(400, 400),
             'dob' => fake()->date('Y-m-d', '2004-12-31'),
             'status' => rand(1,1),
             'role_id' => rand(1,1),

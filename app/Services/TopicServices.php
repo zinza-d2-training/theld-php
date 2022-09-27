@@ -8,12 +8,16 @@ class TopicServices
 {
     public function getTopics()
     {
-        $topics = Topic::orderBy('id', 'desc')->paginate(10);
+        $topics = Topic::orderBy('id', 'desc')
+        ->withCount('posts')
+        ->paginate(10);
 
-        foreach ($topics as $topic) {
-            $topic->countPost = $topic->posts->count();
-        }
         return $topics;
+    }
+
+    public function getAll()
+    {
+        return Topic::all();
     }
 
     public function storeTopic($data)

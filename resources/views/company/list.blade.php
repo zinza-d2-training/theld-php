@@ -33,7 +33,7 @@
                     </td>
                     <td><x-user.status :status="$company->status"/></td>
                     <td>
-                        {{ $company->countUser }} / {{ $company->max_user }}
+                        {{ $company->users_count }} / {{ $company->max_user }}
                     </td>
                     <td>
                         <div class="dropdown">
@@ -60,6 +60,7 @@
 @endsection
 
 @section('master-script')
+@parent
     <script>
         function deleteCompany(e) {
             if (confirm('Delete this company?'))
