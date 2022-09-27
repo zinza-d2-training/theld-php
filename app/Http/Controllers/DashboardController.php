@@ -16,12 +16,7 @@ class DashboardController extends Controller
         $this->postServices = $postServices;
         $this->dashboardServices = $dashboardServices;
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $topics = $this->dashboardServices->getTopics();
@@ -31,69 +26,26 @@ class DashboardController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function topicDetail(Request $request)
     {
-        //
+        $data = $this->dashboardServices->getPostInTopic($request->slug);
+        extract($data);
+
+        return view('dashboard.list', [
+            'is_searching' => false,
+            'topic' => $topics,
+            'posts' => $posts
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function search(Request $request)
     {
-        //
-    }
+        $data = $this->dashboardServices->getPostBySearch($request->search);
+        extract($data);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return view('dashboard.list', [
+            'is_searching' => true,
+            'posts' => $posts
+        ]);
     }
 }

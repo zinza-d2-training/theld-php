@@ -33,7 +33,8 @@
                             <select class="form-select" name="company_id" id="role" aria-label="Default select example" required>
                                 <option selected disabled>Select company</option>
                                     @foreach ($companies as $company)
-                                        <option value="{{ $company->id }}" {{ ($isEditing && $user->company->id==$company->id ) || (Auth::user()->role_id == config('constant.role.ca_user')) ? 'selected' : '' }}>{{ $company->name }}</option>
+                                        <option value="{{ $company->id }}" 
+                                            {{ ($isEditing && data_get($user->company, 'id') == $company->id ) || (Auth::user()->role_id == config('constant.role.ca_user')) ? 'selected' : '' }}>{{ $company->name }}</option>
                                     @endforeach
                             </select>
                         </div>

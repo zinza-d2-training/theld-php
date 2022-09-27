@@ -12,6 +12,7 @@ use App\Services\CompanyServices;
 use App\Services\MailServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -103,6 +104,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        Cache::flush();
         
         if ($message) {
             return view('auth.message', [
