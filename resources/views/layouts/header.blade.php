@@ -1,4 +1,4 @@
-<header class="p-3 border-bottom" style="background: #1C2331;" >
+<header class="p-3 border-bottom" style="background: #332b6a;" >
     <div class="container-fluid">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
 
