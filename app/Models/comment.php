@@ -16,4 +16,14 @@ class Comment extends Model
         'post_id',
         'is_resolve'
     ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function reactions()
+    {
+        return $this->hasMany(CommentReaction::class, 'comment_id');
+    }
 }

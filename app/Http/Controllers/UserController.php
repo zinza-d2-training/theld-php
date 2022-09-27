@@ -8,11 +8,15 @@ use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use App\Models\UserCompany;
 use App\Services\MailServices;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+    private $userServices;
+    private $mailServices;
+
     public function __construct(UserServices $userServices, MailServices $mailServices)
     {
         $this->userServices = $userServices;
@@ -78,5 +82,10 @@ class UserController extends Controller
         else {
             return back()->withErrors('Delete User Failed');
         }
+    }
+
+    public function deleteMultiple(Request $request)
+    {
+        dd($request);
     }
 }

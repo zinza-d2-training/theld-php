@@ -19,7 +19,10 @@
             <tbody>
                 @foreach ($posts as $post)
                 <tr>
-                    <th>{{ $post->title }}</th>
+                    <th>
+                        {{ $post->title }}
+                        {!! $post->is_pinned ? '<i class="fa-solid fa-thumbtack text-primary" data-bs-toggle="tooltip" title="Pinned"></i>' : '' !!}
+                    </th>
                     <td>{{ $post->users->name }}</td>
                     <td><x-post.status :status="$post->status"/></td>
                     <td>

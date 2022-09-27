@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    private $authServices;
+    private $companyServices;
+    private $mailServices;
+
     public function __construct(AuthServices $authServices, CompanyServices $companyServices, MailServices $mailServices)
     {
         $this->authServices = $authServices;
@@ -38,6 +42,10 @@ class AuthController extends Controller
             'password' => $request->password
         ])) {
             return back()->withErrors('Incorrect password');
+        }
+        if (Auth::user()->status == 0){
+            session(['message' => 'Your account is not activate']);
+            return redirect()->route('auth.logout');
         }
         if (!$this->companyServices->isActivate(Auth::user()->company_id)){
             session(['message' => 'Your company has been expired']);

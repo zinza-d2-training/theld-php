@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\commentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MailController;
@@ -28,7 +29,7 @@ Route::middleware('guest')->name('auth.')->group(function () {
     Route::post('checkpoint', [AuthController::class, 'checkpoint'])->name('checkpoint');
 
     Route::get('forgot-password', [AuthController::class, 'forgotPassword'])->name('forgotPassword');
-    Route::post('forgot-password', [MailController::class, 'resetPassword'])->name('sendLinkResetPassword');
+    Route::post('forgot-password', [AuthController::class, 'sendMail'])->name('sendLinkResetPassword');
 
     Route::get('reset-password/{token}', [AuthController::class, 'editPassword'])->name('editPassword');
     Route::post('update-password', [AuthController::class, 'updatePassword'])->name('updatePassword');
@@ -45,7 +46,7 @@ Route::middleware('auth')->group(function () {
 
     // Profile
     Route::name('profile.')->group(function () {
-        Route::get('profile', [ProfileController::class, 'edit'])->name('edit');
+        Route::get('profile', 'ProfileController@edit')->name('edit');
         Route::post('profile', [ProfileController::class, 'update'])->name('update');
     });
 
@@ -54,12 +55,12 @@ Route::middleware('auth')->group(function () {
         Route::get('', [UserController::class, 'index'])->name('index');
         Route::get('create', [UserController::class, 'create'])->name('create');
         Route::post('store', [UserController::class, 'store'])->name('store');
-        Route::get('send-mail-new-user', [MailController::class, 'NewUser'])->name('sendMailNewUser');
         
         Route::middleware('can:updateUser,user')->group(function () {
             Route::get('edit/{user}', [UserController::class, 'edit'])->name('edit');
             Route::post('update/{user}', [UserController::class, 'update'])->name('update');
             Route::delete('delete/{user}', [UserController::class, 'delete'])->name('delete');
+            Route::delete('delete-multiple/{user[]}', [UserController::class, 'deleteMultiple'])->name('deleteMultiple');
             Route::delete('change-status/{user}', [UserController::class, 'updateStatus'])->name('updateStatus');
         });
     });
@@ -105,6 +106,18 @@ Route::middleware('auth')->group(function () {
             Route::get('edit/{post}', [PostController::class, 'edit'])->name('edit');
             Route::post('update/{post}', [PostController::class, 'update'])->name('update');
             Route::delete('delete/{post}', [PostController::class, 'destroy'])->name('delete');
+        });
+        Route::put('pin/{post}', [PostController::class, 'pin'])->middleware('admin')->name('pin');
+    });
+
+    // Comment
+    Route::name('comment.')->prefix('comment')->group(function () {
+        Route::post('store/{post}', [commentController::class, 'store'])->name('store');
+        Route::get('reaction/{id}', [commentController::class, 'reaction'])->name('reaction');
+        Route::get('resolved/{comment}', [commentController::class, 'resolved'])->name('resolved');
+        Route::middleware('can:updatePost,post')->group(function () {
+            Route::post('update/{post}', [commentController::class, 'update'])->name('update');
+            Route::delete('delete/{post}', [commentController::class, 'destroy'])->name('delete');
         });
     });
 });

@@ -3,7 +3,7 @@
 @elseif ($status == config('constant.post.status.rejected'))
     <span class="badge bg-danger">Rejected</span>
 @elseif ($status == config('constant.post.status.unsolved'))
-    <span class="badge bg-danger">Not Resolve</span>
+    <span class="badge bg-primary">Not Resolve</span>
 @elseif ($status == config('constant.post.status.resolved'))
-    <span class="badge bg-danger">Resolved</span>
+    <span class="badge bg-success">Resolved</span>
 @endif

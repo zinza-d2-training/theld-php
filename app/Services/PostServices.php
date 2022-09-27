@@ -42,7 +42,7 @@ class PostServices extends Controller
     {
         $data = $request->input();
         $data['user_id'] = Auth::id();
-        $data['status'] = Post::STATUS_WAITING;
+        $data['status'] =  Auth::user()->role_id == User::ROLE_MEMBER ? Post::STATUS_WAITING : Post::STATUS_DESOLVED;
 
         $data['tags'] ? $tags = explode(",", $data['tags']) : '';
         unset($data['tags']);

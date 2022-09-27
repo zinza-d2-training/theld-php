@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    private $postServices;
+    private $topicServices;
+    private $tagServices;
+    private $mailServices;
+
     public function __construct(PostServices $postServices, TopicServices $topicServices, TagServices $tagServices, MailServices $mailServices)
     {
         $this->postServices = $postServices;
@@ -129,5 +134,12 @@ class PostController extends Controller
             return back()->withErrors('Delete post Failed');
         }
         return redirect()->route('post.index')->withSuccess('Delete Post Successfully');
+    }
+
+    public function pin(Post $post)
+    {
+        $post->update(['is_pinned' => !$post->is_pinned]);
+
+        return back()->withSuccess($post->is_pinned ? 'Pin successfully' : 'Unpin successfully');
     }
 }

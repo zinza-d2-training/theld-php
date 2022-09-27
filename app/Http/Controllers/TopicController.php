@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Topic\StoreTopicRequest;
+use App\Http\Requests\Topic\UpdateTopicRequest;
 use App\Models\Tag;
 use App\Models\Topic;
 use App\Services\TopicServices;
@@ -10,6 +11,8 @@ use Illuminate\Http\Request;
 
 class TopicController extends Controller
 {
+    private $topicServices;
+    
     public function __construct(TopicServices $topicServices)
     {
         $this->topicServices = $topicServices;
@@ -85,7 +88,7 @@ class TopicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreTopicRequest $request, Topic $topic)
+    public function update(UpdateTopicRequest $request, Topic $topic)
     {
         $this->topicServices->updateTopic($request->input(), $topic);
         return back()->withSuccess('Update Topic successfully');

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Post;
 
 use App\Rules\Admin;
+use App\Rules\AdminCA;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePostRequest extends FormRequest
@@ -26,9 +27,9 @@ class StorePostRequest extends FormRequest
     {
         return [
             'title' => 'required|min:5',
-            'description' => 'required',
+            'description' => 'required|min:1',
             'topic_id' => 'required|exists:topics,id',
-            'status' => ['nullable', new Admin]
+            'status' => ['nullable', new AdminCA]
         ];
     }
 }

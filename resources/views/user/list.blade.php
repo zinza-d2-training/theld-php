@@ -9,7 +9,7 @@
         <table class="table table-hover">
             <thead class="">
                 <tr>
-                    <th><input type="checkbox" name="" id=""></th>
+                    <th><input type="checkbox" name="" id="selectAll"></th>
                     <th>NAME</th>
                     <th>DOB</th>
                     <th>STATUS</th>
@@ -20,7 +20,7 @@
             <tbody>
                 @foreach ($users as $user)
                 <tr>
-                    <th><input type="checkbox" name="" id=""></th>
+                    <th><input type="checkbox" id="{{ $user->id }}" class="checkbox" onchange="check()"></th>
                     <td>
                         <div class="row">
                             <div class="col">{{$user->name}}</div>
@@ -49,16 +49,52 @@
                 @endforeach
             </tbody>
         </table>
-        {{ $users->links() }}
+
+        <form action="{{ route('user.delete', ['user'=>$user->id]) }}" method="POST">
+            @csrf
+            @method('delete')
+            <span style="cursor: pointer" onclick="deleteMultiple()" class="btn btn-danger" id="btn-delete-multi">Delete Multiple</span>
+        </form>   
+
+        <div>
+            {{ $users->links() }}
+        </div>
     </div>
 @endsection
 
 @section('master-script')
 @parent
     <script>
+        const checkAll = document.getElementById('selectAll')
+        const checkboxs = document.querySelectorAll('.checkbox')
+        const btnDeleteMulti = document.getElementById('btn-delete-multi')
+
+        function check(){
+            btnDeleteMulti.style.display = "none"
+            for (x of checkboxs) {
+                x.checked ? btnDeleteMulti.style.display = "block" : ''
+            }
+        }
+        check()
+
+        checkAll.addEventListener('change', (event) => {
+            for (x of checkboxs) {
+                x.removeAttribute('checked')
+                event.currentTarget.checked ? x.setAttribute('checked', '') : x.removeAttribute('checked')
+            }
+            check()
+        })
+
         function deleteUser(e) {
             if (confirm('Delete this user?'))
                 e.parentNode.submit()
+        }
+
+        function deleteMultiple() {
+            checked = []
+            for (x of checkboxs) {
+                x.checked ? x.setAttribute('checked','') : x.removeAttribute('checked')
+            }
         }
     </script>
 @endsection

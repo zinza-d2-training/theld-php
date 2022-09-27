@@ -7,7 +7,7 @@
 
             {!! $post->is_pinned ? '<i class="fa-solid fa-thumbtack text-primary" data-bs-toggle="tooltip" title="Pinned"></i>' : '' !!}
 
-            {{ $post->title }}
+            <a class="text-decoration-none link-dark" href="{{ route('postDetail', ['slug' => $post->slug]) }}">{{ $post->title }}</a>
         </div>
 
         <div class="d-flex">

@@ -20,6 +20,11 @@ class Tag extends Model
         return $this->belongsToMany(Post::class, 'post_tags');
     }
 
+    public function postTags()
+    {
+        return $this->hasMany(PostTag::class, 'tag_id');
+    }
+
     /**
      * Return the sluggable configuration array for this model.
      *
