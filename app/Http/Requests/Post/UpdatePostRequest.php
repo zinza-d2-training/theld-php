@@ -29,10 +29,11 @@ class UpdatePostRequest extends FormRequest
     {
         return [
             'title' => ['', 'min:5', new OwnerPost($this->post->user_id)],
-            'description' => ['required', 'min:1', new OwnerPost($this->post->user_id)],
-            'topic_id' => '|exists:topics,id',
+            'description' => ['min:1', new OwnerPost($this->post->user_id)],
+            'topic_id' => 'exists:topics,id',
             'tags' => ['nullable'],
-            'status' => ['integer', 'min:-1', 'max:2', new adminAndCA($this->post->users->company_id)]
+            'status' => ['integer', 'min:-1', 'max:2', new adminAndCA($this->post->users->company_id)],
+            'is_pinned' => ['integer', 'min:-1', 'max:2', new adminAndCA($this->post->users->company_id)]
         ];
     }
 }

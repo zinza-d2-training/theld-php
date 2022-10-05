@@ -11,8 +11,10 @@
                 <hr>
 
                 <div class="avatar p-4">
-                    <img class="mx-auto d-block" src="https://i.pinimg.com/236x/6f/a2/5f/6fa25f61d325b980f7b602136b18d0e7.jpg" width="92px" alt="">
+                    <img class="mx-auto d-block" src="{{asset('images/user/default.png')}}" width="92px" alt="">
                 </div>
+
+                {{asset('images/user/default.png')}}
                 
                 <div class="login-form p-4">
                     @if ($errors->any())

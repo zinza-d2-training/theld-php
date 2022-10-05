@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
 
     // Profile
     Route::name('profile.')->group(function () {
-        Route::get('profile', 'ProfileController@edit')->name('edit');
+        Route::get('profile', [ProfileController::class, 'edit'])->name('edit');
         Route::post('profile', [ProfileController::class, 'update'])->name('update');
     });
 
@@ -84,7 +84,6 @@ Route::middleware('auth')->group(function () {
         Route::get('edit/{topic}', [TopicController::class, 'edit'])->name('edit');
         Route::post('update/{topic}', [TopicController::class, 'update'])->name('update');
         Route::delete('delete/{topic}', [TopicController::class, 'destroy'])->name('delete');
-        Route::delete('change-status/{topic}', [TopicController::class, 'updateStatus'])->name('updateStatus');
     });
     
     // Tag

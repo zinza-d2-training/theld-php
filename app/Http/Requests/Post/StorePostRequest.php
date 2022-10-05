@@ -26,10 +26,10 @@ class StorePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|min:5',
-            'description' => 'required|min:1',
+            'title' => 'required|min:5|max:250',
+            'description' => 'required|min:10',
             'topic_id' => 'required|exists:topics,id',
-            'status' => ['nullable', new AdminCA]
+            'status' => ['numeric', new AdminCA]
         ];
     }
 }

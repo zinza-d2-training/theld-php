@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Topic;
+namespace App\Http\Requests\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTopicRequest extends FormRequest
+class GetPostsInTopic extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class StoreTopicRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:1|max:100|unique:topics,name'
+            'slug' => 'required|exists:topics,slug'
         ];
     }
 }

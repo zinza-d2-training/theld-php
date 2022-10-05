@@ -27,8 +27,8 @@ class UpdateCompanyRequest extends FormRequest
             'name' => ['required', 'min:4', 'unique:companies,name,' . $this->company->id],
             'logo' => 'nullable|image|mimes:jpeg,jpg,png,gif',
             'address' => 'nullable|min:0|max:190',
-            'max_user' => 'required|numeric|min:0',
-            'expired_at' => 'required|date',
+            'max_user' => 'numeric|min:0',
+            'expired_at' => 'date',
             'status' => 'numeric|min:0'
         ];
     }

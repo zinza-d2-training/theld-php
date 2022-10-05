@@ -25,7 +25,8 @@ class UpdatePasswordRequest extends FormRequest
     {
         return [
             'password' => 'required|min:5|max:50',
-            'confirm_password' => 'required|min:5|max:50|same:password'
+            'confirm_password' => 'required|min:5|max:50|same:password',
+            'token' => 'required|exists:password_resets,token'
         ];
     }
 }

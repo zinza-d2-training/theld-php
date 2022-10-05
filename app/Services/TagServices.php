@@ -11,7 +11,7 @@ class TagServices
     {
         $tags = Tag::orderBy('id', 'desc')
         ->withCount('posts')
-        ->paginate(10);
+        ->paginate(config('constant.paginate.maxRecord'));
 
         return $tags;
     }
@@ -33,7 +33,6 @@ class TagServices
 
     public function deleteTag($tag)
     {
-        $tag->delete();
-        return $tag->trashed();
+        return $tag->delete();
     }
 }

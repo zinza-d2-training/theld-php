@@ -42,6 +42,11 @@ class UserServices extends Controller
         }
     }
 
+    public function isExistsEmail($email)
+    {
+        return User::where('email', 'like', $email)->first() ? true : false;
+    }
+
     public function getRoles()
     {
         return Role::select('id', 'name')->where('id', '>', 1)->get();
@@ -58,9 +63,36 @@ class UserServices extends Controller
         return $user->update($data);
     }
 
-    public function deleteUser(User $user)
+    public function deleteUser($ids)
     {
-        $user->delete();
-        return $user->trashed();
+        try {
+            $ids = explode("|", $ids);
+            $process = [];
+
+            $users = User::whereIn('id', $ids)
+            ->where('id', '!=', Auth::id())
+            ->where('role_id', '!=', User::ROLE_ADMIN)
+            ->where(function($query){
+                if (Auth::user()->role_id == User::ROLE_COMPANY_ACCOUNT) {
+                    $query->where('company_id', Auth::user()->company_id);
+                }
+            })
+            ->get();
+
+            foreach ($users as $user) {
+                $user->delete();
+                $process[$user->id]= $user->trashed();
+            }
+            return $process;
+        } catch (\Throwable $th) {
+            return $th;
+        }
+        
+    }
+
+    public function updateAvatar($image)
+    {
+        $fileName = $image->hashName();
+        return $image->storeAs('images/user', $fileName);
     }
 }
