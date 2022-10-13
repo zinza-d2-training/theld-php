@@ -14,7 +14,7 @@ class TopicController extends Controller
 {
     private $topicServices;
     private $dashboardServices;
-    
+
     public function __construct(TopicServices $topicServices, DashboardServices $dashboardServices)
     {
         $this->topicServices = $topicServices;
@@ -58,7 +58,7 @@ class TopicController extends Controller
             ]
         ], 200);
     }
-    
+
     public function store(StoreTopicRequest $request)
     {
         $topic = $this->topicServices->storeTopic($request->input());
@@ -67,7 +67,7 @@ class TopicController extends Controller
             "data" => $topic
         ], 201);
     }
-    
+
     public function update(UpdateTopicRequest $request, Topic $topic)
     {
         $this->topicServices->updateTopic($request->input(), $topic);
@@ -80,16 +80,13 @@ class TopicController extends Controller
     {
         $deleted = $this->topicServices->deleteTopic($topic);
 
-        if ($deleted) {
-            return response([
-                "message" => "Delete Topic Successfully"
-            ], 200);
-        }
-        else {
+        if (!$deleted) {
             response([
                 "message" => "Delete Topic Failed"
             ], 501);
         }
+        return response([
+            "message" => "Delete Topic Successfully"
+        ], 200);
     }
-
 }

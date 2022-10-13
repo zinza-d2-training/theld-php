@@ -14,36 +14,39 @@ class PostServices extends Controller
     public function getPosts()
     {
         if (Auth::user()->role_id == User::ROLE_ADMIN) {
-            $posts = Post::with('tags')->with('users')
-            ->withExists(['comments' => function($query) {
-                return $query->where('is_resolve', true);
-            }])
-            ->orderBy('is_pinned', 'desc')
-            ->orderBy('id', 'desc')
-            ->paginate(config('constant.paginate.maxRecord'));
-        }
-        elseif (Auth::user()->role_id == User::ROLE_COMPANY_ACCOUNT) {
-            $posts = Post::with('tags')->with('users')
-            ->whereHas('users', fn ($query) =>
-                $query->where('company_id', '=', Auth::user()->company_id)
-            )
-            ->orderBy('is_pinned', 'desc')
-            ->orderBy('id', 'desc')
-            ->paginate(config('constant.paginate.maxRecord'));
-        }
-        else {
-            $posts = Post::with('users')
-            ->where('user_id', Auth::id())
-            ->orderBy('is_pinned', 'desc')
-            ->orderBy('id', 'desc')
-            ->paginate(config('constant.paginate.maxRecord'));
+            $posts = Post::with('tags')->with('users')->with('topic')
+                ->withExists(['comments' => function ($query) {
+                    return $query->where('is_resolve', true);
+                }])
+                ->orderBy('is_pinned', 'desc')
+                ->orderBy('status', 'asc')
+                ->orderBy('id', 'desc')
+                ->paginate(config('constant.paginate.maxRecord'));
+        } elseif (Auth::user()->role_id == User::ROLE_COMPANY_ACCOUNT) {
+            $posts = Post::with('tags')->with('users')->with('topic')
+                ->whereHas(
+                    'users',
+                    fn ($query) =>
+                    $query->where('company_id', '=', Auth::user()->company_id)
+                )
+                ->orderBy('is_pinned', 'desc')
+                ->orderBy('status', 'asc')
+                ->orderBy('id', 'desc')
+                ->paginate(config('constant.paginate.maxRecord'));
+        } else {
+            $posts = Post::with('users')->with('topic')
+                ->where('user_id', Auth::id())
+                ->orderBy('is_pinned', 'desc')
+                ->orderBy('status', 'asc')
+                ->orderBy('id', 'desc')
+                ->paginate(config('constant.paginate.maxRecord'));
         }
         return $posts;
     }
 
     public function getDetail($slug)
     {
-        return Post::where('slug', $slug)->with('users')->withCount('comments')->with('tags')->first();
+        return Post::where('slug', $slug)->with('users')->withCount('comments')->with('tags')->with('topic')->first();
     }
 
     public function storePost($request)

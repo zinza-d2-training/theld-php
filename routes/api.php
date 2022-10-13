@@ -42,8 +42,10 @@ Route::middleware('auth:sanctum')->group(function () {
     //DASHBOARD
     Route::prefix('home')->group(function () {
         Route::get('get-all', 'HomeController@getAll');
-        Route::get('search', 'HomeController@search');
+        Route::get('chart-data', 'HomeController@getChartData');
     });
+
+    Route::post('search', 'HomeController@search');
 
     //TOPIC
     Route::prefix('topic')->group(function () {
@@ -58,18 +60,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //POST
     Route::prefix('post')->group(function () {
-        Route::get('lastest', 'PostController@getLastestPost');
-        Route::get('in-topic', 'PostController@getPostsInTopic');
-
         Route::get('get', 'PostController@index');
         Route::get('get-one', 'PostController@detail');
         Route::get('get-data-create', 'PostController@getDataCreate');
+        Route::get('lastest', 'PostController@getLastestPost');
+        Route::get('in-topic', 'PostController@getPostsInTopic');
+
         Route::post('store', 'PostController@store');
         Route::middleware('can:updatePost,post')->group(function () {
             Route::put('update/{post}', 'PostController@update');
             Route::delete('delete/{post}', 'PostController@destroy');
         });
+
         Route::delete('pin/{post}', 'PostController@pinPost');
+        Route::delete('multi-delete', 'PostController@multiDelete');
     });
 
 
@@ -80,7 +84,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('get-one/{tag}', 'TagController@getOne');
         Route::post('store', 'TagController@store');
         Route::put('update/{tag}', 'TagController@update');
-        Route::delete('delete/{tag}', 'TagController@destroy');
+        Route::post('delete', 'TagController@destroy');
     });
 
     //COMPANY

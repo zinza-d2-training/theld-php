@@ -116,4 +116,9 @@ class PostController extends Controller
             'message' => 'Delete Post Successfully'
         ], 200);
     }
+
+    public function multiDelete()
+    {
+        # code...
+    }
 }

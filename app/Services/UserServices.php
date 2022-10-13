@@ -14,15 +14,19 @@ class UserServices extends Controller
     {
         if (Auth::user()->role_id == User::ROLE_ADMIN) {
             $users = User::with('role')
+            ->with('company')
             ->where('id', '!=', Auth::id())
+            ->orderBy('role_id', 'asc')
+            ->orderBy('company_id', 'asc')
             ->orderBy('id', 'desc')
             ->paginate(config('constant.paginate.maxRecord'));
         }
         else {
             $users = User::with('role')
+            ->with('company')
             ->where('id', '!=', Auth::id())
             ->where('company_id', Auth::user()->company->id)
-            ->orderBy('id', 'desc')
+            ->orderBy('role_id', 'asc')
             ->paginate(config('constant.paginate.maxRecord'));
         }
 

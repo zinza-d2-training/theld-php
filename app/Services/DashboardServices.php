@@ -15,32 +15,33 @@ class DashboardServices
     public function getTopics()
     {
         if (Cache::has('dashboard')) {
-            $topics = Cache::get('dashboard');
-        } else {
-            $topics = Topic::withCount('posts')->get();
-            foreach ($topics as $key => $topic) {
-                if ($topic->posts_count == 0) {
-                    $topics->forget($key);
-                } else {
-                    $topics[$key] = Topic::where('id', $topic->id)
-                        ->withCount('posts')
-                        ->with(['posts' => function ($query) {
-                            return $query
-                                ->where('status', '>', 0)
-                                ->with('users')
-                                ->with('tags')
-                                ->withCount('comments')
-                                ->orderBy('is_pinned', 'desc')
-                                ->orderBy('id', 'desc')
-                                ->limit(5);
-                        }])
-                        ->withCount('comments')
-                        ->first();
-                    Cache::put('dashboard', $topics, 30);
-                }
+            return Cache::get('dashboard');
+        }
+
+        $topics = Topic::withCount('posts')->get();
+        foreach ($topics as $key => $topic) {
+            if ($topic->posts_count == 0) {
+                $topics->forget($key);
+                continue;
             }
+            $topics[$key] = Topic::where('id', $topic->id)
+                ->withCount('posts')
+                ->with(['posts' => function ($query) {
+                    return $query
+                        ->where('status', '>', 0)
+                        ->with('users')
+                        ->with('tags')
+                        ->withCount('comments')
+                        ->orderBy('is_pinned', 'desc')
+                        ->orderBy('id', 'desc')
+                        ->limit(5);
+                }])
+                ->withCount('comments')
+                ->first();
             Cache::put('dashboard', $topics, 30);
         }
+        Cache::put('dashboard', $topics, 30);
+        
         return $topics;
     }
 
@@ -84,6 +85,7 @@ class DashboardServices
     public function getPostBySearch($searchContent)
     {
         $posts = Post::where('title', 'LIKE', "%{$searchContent}%")
+            ->where('status', '>', 1)
             ->orWhere('description', 'LIKE', "%{$searchContent}%")
             ->withCount('comments')
             ->with('users')
@@ -91,9 +93,7 @@ class DashboardServices
             ->orderBy('id', 'desc')
             ->paginate(config('constant.paginate.maxRecord'));
 
-        return [
-            'posts' => $posts
-        ];
+        return $posts;
     }
 
     public function getPostDetail($slug)
@@ -115,5 +115,10 @@ class DashboardServices
     public static function CheckAdminAndCA($request_company_id)
     {
         return (Auth::user()->role_id == User::ROLE_ADMIN || (Auth::user()->role_id == User::ROLE_COMPANY_ACCOUNT && Auth::user()->company_id == $request_company_id));
+    }
+
+    public function getChartData()
+    {
+        
     }
 }

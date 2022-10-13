@@ -31,8 +31,9 @@ class TagServices
         return $tag->update($data);
     }
 
-    public function deleteTag($tag)
+    public function deleteTags($ids)
     {
-        return $tag->delete();
+        $count = Tag::whereIn('id', $ids)->delete();
+        return $count;
     }
 }

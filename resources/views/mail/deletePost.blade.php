@@ -9,7 +9,7 @@
 <body>
     <p><b>Dear {{ $data['user']->name }},</b></p>
 
-    <p>Your Post has been deleted</p>
+    <p>Your Post has been deleted by Admin</p>
     <p>Post: {{ $data['post']->title }}</p>
 </body>
 </html>

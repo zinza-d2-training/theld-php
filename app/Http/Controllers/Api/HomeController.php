@@ -12,10 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    private $topicServices;
-    private $postServices;
     private $dashboardServices;
-    private $commentServices;
 
     public function __construct(TopicServices $topicServices, PostServices $postServices, DashboardServices $dashboardServices, CommentServices $commentServices)
     {
@@ -43,5 +40,10 @@ class HomeController extends Controller
             'message' => 'success',
             'data' => $posts
         ]);
+    }
+
+    public function getChartData()
+    {
+        $data = $this->dashboardServices->getChartData();
     }
 }

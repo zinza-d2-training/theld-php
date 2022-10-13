@@ -62,18 +62,12 @@ class TagController extends Controller
         ], 200);
     }
 
-    public function destroy(Tag $tag)
+    public function destroy(Request $request)
     {
-        $deleted = $this->tagServices->deleteTag($tag);
-
-        if (!$deleted) {
-            return response([
-                'message' => 'Delete Tag Failed'
-            ], 400);
-        }
+        $count = $this->tagServices->deleteTags($request->ids);
 
         return response([
-            'message' => 'Delete Tag Successfully'
+            'message' => $count . ' tags has been deleted'
         ], 200);
     }
 }
