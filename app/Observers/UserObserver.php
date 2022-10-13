@@ -39,6 +39,7 @@ class UserObserver
         foreach ($user->posts as $post) {
             $post->delete();
         }
+        
     }
 
     /**

@@ -24,10 +24,10 @@ class StoreCompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:Companies,name',
+            'name' => 'required|min:5|max:100|unique:Companies,name',
             'logo' => 'nullable|image|mimes:jpeg,jpg,png,gif',
-            'address' => 'nullable|min:0|max:190',
-            'max_user' => 'required|numeric|min:0',
+            'address' => 'nullable|max:250',
+            'max_user' => 'required|numeric|min:0|max:999999',
             'expired_at' => 'required|date',
             'status' => 'numeric|min:0'
         ];

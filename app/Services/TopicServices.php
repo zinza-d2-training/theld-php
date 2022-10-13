@@ -9,14 +9,14 @@ class TopicServices
     public function getTopics()
     {
         $topics = Topic::withCount('posts')
-        ->paginate(10);
+        ->paginate(config('constant.paginate.maxRecord'));
 
         return $topics;
     }
 
     public function getAll()
     {
-        return Topic::all();
+        return Topic::withCount('posts')->get();
     }
 
     public function storeTopic($data)

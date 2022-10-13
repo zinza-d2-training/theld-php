@@ -14,28 +14,39 @@ class PostServices extends Controller
     public function getPosts()
     {
         if (Auth::user()->role_id == User::ROLE_ADMIN) {
-            $posts = Post::with('tags')
-            ->orderBy('is_pinned', 'desc')
-            ->orderBy('id', 'desc')
-            ->paginate(10);
-        }
-        elseif (Auth::user()->role_id == User::ROLE_COMPANY_ACCOUNT) {
-            $posts = Post::with('tags')->with('users')
-            ->whereHas('users', fn ($query) =>
-                $query->where('company_id', '=', Auth::user()->company_id)
-            )
-            ->orderBy('is_pinned', 'desc')
-            ->orderBy('id', 'desc')
-            ->paginate(10);
-        }
-        else {
-            $posts = Post::with('users')
-            ->where('user_id', Auth::id())
-            ->orderBy('is_pinned', 'desc')
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+            $posts = Post::with('tags')->with('users')->with('topic')
+                ->withExists(['comments' => function ($query) {
+                    return $query->where('is_resolve', true);
+                }])
+                ->orderBy('is_pinned', 'desc')
+                ->orderBy('status', 'asc')
+                ->orderBy('id', 'desc')
+                ->paginate(config('constant.paginate.maxRecord'));
+        } elseif (Auth::user()->role_id == User::ROLE_COMPANY_ACCOUNT) {
+            $posts = Post::with('tags')->with('users')->with('topic')
+                ->whereHas(
+                    'users',
+                    fn ($query) =>
+                    $query->where('company_id', '=', Auth::user()->company_id)
+                )
+                ->orderBy('is_pinned', 'desc')
+                ->orderBy('status', 'asc')
+                ->orderBy('id', 'desc')
+                ->paginate(config('constant.paginate.maxRecord'));
+        } else {
+            $posts = Post::with('users')->with('topic')
+                ->where('user_id', Auth::id())
+                ->orderBy('is_pinned', 'desc')
+                ->orderBy('status', 'asc')
+                ->orderBy('id', 'desc')
+                ->paginate(config('constant.paginate.maxRecord'));
         }
         return $posts;
+    }
+
+    public function getDetail($slug)
+    {
+        return Post::where('slug', $slug)->with('users')->withCount('comments')->with('tags')->with('topic')->first();
     }
 
     public function storePost($request)
@@ -68,10 +79,16 @@ class PostServices extends Controller
     public function updatePost($request, $post)
     {
         $data = $request->input();
-        $data['tags'] ? $tags = explode(",", $data['tags']) : '';
-        unset($data['tags']);
 
-        $post->update($data);
+        if (data_get($data, 'tags')) {
+            $tags = explode(",", $data['tags']);
+            unset($data['tags']);
+        }
+        if (Auth::user()->role_id == config('constant.role.member')) {
+            $data['status'] = 0;
+        }
+
+        $p = $post->update($data);
 
         $post->postTags()->delete();
         isset($tags) ? $this->storePostTags($post->id, $tags) : '';

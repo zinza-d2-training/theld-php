@@ -15,20 +15,33 @@ class DashboardServices
     public function getTopics()
     {
         if (Cache::has('dashboard')) {
-            $topics = Cache::get('dashboard');
-        } else {
-            $topics = Topic::withCount('posts')
-            ->with(['posts' => function($query) {
-                return $query->with('users')
+            return Cache::get('dashboard');
+        }
+
+        $topics = Topic::withCount('posts')->get();
+        foreach ($topics as $key => $topic) {
+            if ($topic->posts_count == 0) {
+                $topics->forget($key);
+                continue;
+            }
+            $topics[$key] = Topic::where('id', $topic->id)
+                ->withCount('posts')
+                ->with(['posts' => function ($query) {
+                    return $query
+                        ->where('status', '>', 0)
+                        ->with('users')
+                        ->with('tags')
+                        ->withCount('comments')
+                        ->orderBy('is_pinned', 'desc')
+                        ->orderBy('id', 'desc')
+                        ->limit(5);
+                }])
                 ->withCount('comments')
-                ->orderBy('is_pinned', 'desc')
-                ->orderBy('id', 'desc')
-                ->limit(8);
-            }])
-            ->withCount('comments')
-            ->get();
+                ->first();
             Cache::put('dashboard', $topics, 30);
         }
+        Cache::put('dashboard', $topics, 30);
+        
         return $topics;
     }
 
@@ -37,16 +50,16 @@ class DashboardServices
         $postLimit = 5;
 
         $posts = Post::select(DB::raw("id, user_id, created_at, title, is_pinned, slug, LEFT(`description`, 45) as `description`"))
-        ->where('status', '>', 0)
-        ->with('users')
-        ->orderBy('is_pinned', 'desc')
-        ->orderBy('id', 'desc')
-        ->limit($postLimit)
-        ->get();
+            ->where('status', '>', 0)
+            ->with('users')
+            ->orderBy('is_pinned', 'desc')
+            ->orderBy('id', 'desc')
+            ->limit($postLimit)
+            ->get();
 
         return $posts;
     }
-    
+
     public function getPostInTopic($topicSlug)
     {
         $topic = Topic::where('slug', $topicSlug)->first();
@@ -54,11 +67,13 @@ class DashboardServices
 
         if ($topic) {
             $posts = Post::where('topic_id', $topic->id)
-            ->withCount('comments')
-            ->with('users')
-            ->orderBy('is_pinned', 'desc')
-            ->orderBy('id', 'desc')
-            ->paginate(config('constant.paginate.maxRecord'));
+                ->where('status', '>', 0)
+                ->withCount('comments')
+                ->with('users')
+                ->with('tags')
+                ->orderBy('is_pinned', 'desc')
+                ->orderBy('id', 'desc')
+                ->paginate(config('constant.paginate.maxRecord'));
         }
 
         return [
@@ -66,32 +81,44 @@ class DashboardServices
             'posts' => $posts
         ];
     }
-    
+
     public function getPostBySearch($searchContent)
     {
         $posts = Post::where('title', 'LIKE', "%{$searchContent}%")
-        ->orWhere('description', 'LIKE', "%{$searchContent}%")
-        ->withCount('comments')
-        ->with('users')
-        ->orderBy('is_pinned', 'desc')
-        ->orderBy('id', 'desc')
-        ->paginate(config('constant.paginate.maxRecord'));
+            ->where('status', '>', 1)
+            ->orWhere('description', 'LIKE', "%{$searchContent}%")
+            ->withCount('comments')
+            ->with('users')
+            ->orderBy('is_pinned', 'desc')
+            ->orderBy('id', 'desc')
+            ->paginate(config('constant.paginate.maxRecord'));
 
-        return [
-            'posts' => $posts
-        ];
+        return $posts;
     }
-     
+
     public function getPostDetail($slug)
     {
         $post = Post::where('slug', $slug)
-        ->with('users')->with('tags')->first();
+            ->with('users')->with('tags')->first();
 
         return $post;
     }
 
+    public function getComment($slug)
+    {
+        $comments = Comment::where('slug', $slug)
+            ->with('users')->with('tags')->first();
+
+        return $comments;
+    }
+
     public static function CheckAdminAndCA($request_company_id)
     {
-        return (Auth::user()->role_id == User::ROLE_ADMIN || (Auth::user()->role_id == User::ROLE_COMPANY_ACCOUNT && Auth::user()->company_id == $request_company_id) );
+        return (Auth::user()->role_id == User::ROLE_ADMIN || (Auth::user()->role_id == User::ROLE_COMPANY_ACCOUNT && Auth::user()->company_id == $request_company_id));
+    }
+
+    public function getChartData()
+    {
+        
     }
 }

@@ -27,7 +27,8 @@ return [
     ],
 
     'paginate' => [
-        'maxRecord' => 10
+        'maxRecord' => 10,
+        'maxCommentRecord' => 10
     ],
 
     'post' => [

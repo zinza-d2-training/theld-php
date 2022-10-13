@@ -7,9 +7,6 @@
     <title>Test</title>
 </head>
 <body>
-    <p><b>Dear {{ $data['user']->name }},</b></p>
-
-    <p>Your Post has been deleted by Admin</p>
-    <p>Post: {{ $data['post']->title }}</p>
+    <a href="{{ env('APP_SPA_URL') . '/reset-password/' . $mailData['token'] }}">Click here to Reset your password</a>
 </body>
 </html>

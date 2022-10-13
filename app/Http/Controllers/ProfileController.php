@@ -18,7 +18,6 @@ class ProfileController extends Controller
         ]);
     }
 
-
     public function update(ProfileUpdateRequest $request)
     {
         $oldUser = User::find(Auth::id());

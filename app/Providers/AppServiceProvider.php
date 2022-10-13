@@ -10,6 +10,8 @@ use App\Observers\TopicObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use Laravel\Sanctum\PersonalAccessToken;
+use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         Paginator::useBootstrapFive();
         Topic::observe(TopicObserver::class);
         User::observe(UserObserver::class);

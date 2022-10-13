@@ -28,4 +28,12 @@ class PostPolicy
         }
         return false;
     }
+
+    public function ownerPost($auth , $post)
+    {
+        if ($auth->id == $post->user_id) {
+            return true;
+        }
+        return false;
+    }
 }

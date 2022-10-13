@@ -14,9 +14,22 @@ class CompanyServices
         ->withCount('users')
         ->with('companyAccount')
         ->orderBy('id', 'desc')
-        ->paginate(10);
+        ->paginate(config('constant.paginate.maxRecord'));
 
         return $companies;
+    }
+
+    public function getForCreateUser()
+    {
+        if (Auth::user()->role_id == User::ROLE_COMPANY_ACCOUNT) {
+            return [Auth::user()->company];
+        }
+        else {
+            return Company::select('id', 'name', 'max_user', 'expired_at', 'status')
+            ->where('expired_at', '>', now())
+            ->where('status', Company::STATUS_ACTIVATE)
+            ->get();
+        }
     }
 
     public function storeCompany($request)
@@ -48,7 +61,7 @@ class CompanyServices
         }
 
         $count = $company->users->count();
-        if ($data['max_user'] < $count) {
+        if (data_get($data, 'max_user') < $count) {
             return false;
         }
         return $company->update($data);

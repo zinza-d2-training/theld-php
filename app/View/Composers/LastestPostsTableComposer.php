@@ -8,6 +8,7 @@ use Illuminate\View\View;
 
 class LastestPostsTableComposer
 {
+    private $lastestPosts;
     public function __construct(DashboardServices $dashboardServices)
     {
         $this->dashboardServices = $dashboardServices;

@@ -8,13 +8,14 @@ use App\Mail\DeletePost;
 use App\Mail\DeletePostMail;
 use App\Mail\NewUserMail;
 use App\Mail\ResetPasswordEmail;
+use App\Mail\ResetPasswordSpaEmail;
 use Illuminate\Support\Facades\Mail;
 
 class MailServices extends Controller
 {
     public function sendMailResetPassword($emailAddress, $token)
     {
-        $email = new ResetPasswordEmail([
+        $email = new ResetPasswordSpaEmail([
             "token" => $token
         ]);
     

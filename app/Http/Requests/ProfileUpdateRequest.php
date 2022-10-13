@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\File;
 
 class ProfileUpdateRequest extends FormRequest
@@ -26,7 +29,16 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => ' required|string|min:5|max:100',
-            'old_password' => 'nullable|max:50',
+            'old_password' => [
+                'nullable',
+                'max:50',
+                function ($attribute, $value, $fail) {
+                    $user = User::find(Auth::id());
+                    if (!Hash::check($value, $user->password)) {
+                        $fail('Wrong old password');
+                    }
+                },
+            ],
             'new_password' => 'nullable|min:5|max:50|required_unless:old_password,null',
             'confirm_new_password' => 'nullable|min:5|max:50|same:new_password',
             'avatar' => 'nullable|mimes:jpeg,jpg,png,gif'
